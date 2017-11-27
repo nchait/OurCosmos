@@ -23,6 +23,9 @@ router.get('/', function(req, res) {
 });
 
 app.use('/api', router);
+router.get('/api', function(req, res) {
+    res.json({message: 'Welcome'});
+});
 
 app.listen(port);
 console.log('Server is running on port ' + port)

@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "https://node-angular-lgobinath.c9users.io:8081",
+        "target": "https://lab05-nchait.c9users.io:8081",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "info"
