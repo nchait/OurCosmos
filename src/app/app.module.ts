@@ -4,13 +4,17 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SampleComponent } from './sample/sample.component';
-import {SampleService} from './sample.service'
+import {SampleService} from './sample.service';
+import { LoginComponent } from './login/login.component';
+import { GetPicturesComponent } from './get-pictures/get-pictures.component'
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SampleComponent
+    SampleComponent,
+    LoginComponent,
+    GetPicturesComponent
   ],
   imports: [
     BrowserModule,

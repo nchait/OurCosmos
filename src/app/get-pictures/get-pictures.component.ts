@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import {SampleService} from '../sample.service';
-import { GetPicturesComponent } from '../get-pictures/get-pictures.component';
+import { GetPicturesService } from '../get-pictures.service';
 
 @Component({
-  selector: 'app-sample',
-  templateUrl: './sample.component.html',
-  styleUrls: ['./sample.component.css']
+  selector: 'app-get-pictures',
+  templateUrl: './get-pictures.component.html',
+  styleUrls: ['./get-pictures.component.css']
 })
-export class SampleComponent implements OnInit {
+export class GetPicturesComponent implements OnInit {
 
   // Initialize response with empty string
   response = '';
   fill = '';
 
   pictures = new Array(100);
-  constructor(private _sampleService: SampleService) {
-    this._sampleService.getData(this.onResponse.bind(this),'');
+  constructor(private _getPicService: GetPicturesService) {
+    this._getPicService.getData(this.onResponse.bind(this));
   }
 
   ngOnInit() {
@@ -24,7 +23,7 @@ export class SampleComponent implements OnInit {
   onClick() {
     // Call the service method, passing the onResponse as the callback
     // binding 'this' is required to avoid "this is undefined error"
-    //this._sampleService.getData(this.onResponse.bind(this));
+    //this._getPicService.getData(this.onResponse.bind(this));
   }
   
   /*
@@ -33,10 +32,18 @@ export class SampleComponent implements OnInit {
    */
   onResponse(res) {
     console.log(res);
-    this.pictures=res;
+    console.log(res[0].links[0].href);
+    let j: any;
+    
+    for(j in res) {
+       this.pictures[j]=res[j].links[0].href;
+    }
+    console.log(this.pictures);
+    //this.fill=<img src=this.pictures[0]>
 
 
   }
 
 }
 //  <img width="300" alt="Angular Logo" src="https://images-assets.nasa.gov/image/'Witch Head' Brews Baby Stars_10592267924_o/'Witch Head' Brews Baby Stars_10592267924_o~thumb.jpg">  
+
