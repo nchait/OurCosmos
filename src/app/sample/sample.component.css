@@ -1,0 +1,10 @@
+.image-container{
+    width:15rem;
+    height:15rem;
+    margin:1rem;
+    float: left;
+}
+.the-image{
+    width:100%;
+    height: auto;
+}

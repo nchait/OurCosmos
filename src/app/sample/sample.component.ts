@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {SampleService} from '../sample.service';
-import { GetPicturesComponent } from '../get-pictures/get-pictures.component';
 
 @Component({
   selector: 'app-sample',
@@ -22,15 +21,8 @@ export class SampleComponent implements OnInit {
   }
   
   onClick() {
-    // Call the service method, passing the onResponse as the callback
-    // binding 'this' is required to avoid "this is undefined error"
-    //this._sampleService.getData(this.onResponse.bind(this));
   }
-  
-  /*
-   * The HTTP request is aynchronous.
-   * Therefore a callback function is required to get back the response.
-   */
+
   onResponse(res) {
     console.log(res);
     this.pictures=res;
