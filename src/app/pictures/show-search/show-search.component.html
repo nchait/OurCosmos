@@ -1,7 +1,20 @@
-<div *ngFor = "let x of pictures">
-    <div class = "image-container">    
-        <img class= "the-image" src = {{x}}/>
+
+<form class="navbar-form form-inline my-2 my-lg-0" (ngSubmit)="onSearch(f)" #f="ngForm">
+    <input name="search" id="search" class="form-control mr-sm-2" type="text" ngModel placeholder="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<ng-container *ngIf="show == 1;else second">      
+    <div *ngFor = "let x of pictures">
+        <form class="navbar-form form-inline my-2 my-lg-0" (ngSubmit)="onSelect(f)" #f="ngForm">
+            <button class="btn btn-outline-success my-2 my-sm-0 image-container" type="submit">
+                    <img class= "the-image" src = {{x}}/>                        
+            </button>
+            <input type="hidden" value= {{x}} name="pic" id="pic">
+        </form>
     </div>
-</div>
+</ng-container>
+<ng-template #second>
+    searching...
+</ng-template>        
 <app-navbar></app-navbar>
     

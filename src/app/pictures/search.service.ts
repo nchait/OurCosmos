@@ -25,5 +25,21 @@ export class SearchService {
 //        callback_fun(pictures);
     });
   }
+  getPrevData(callback_fun) {
+    var params = this.query;
+    this.http.get('/api/nasa/search/'+params).subscribe(data => {
+      let pictures= new Array(100);
+      let j: any;
+      let res = data.body.collection.items;
+      //console.log(res);
+      //console.log(res[0].links[0].href);
 
+      for(j in res) {
+          pictures[j]=res[j].links[0].href;
+      }
+      callback_fun(pictures);
+      //console.log(data);  
+//        callback_fun(pictures);
+    });
+  }
 }
