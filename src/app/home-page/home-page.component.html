@@ -1,0 +1,47 @@
+
+<div class = "jumbotron blockquote">
+ 
+    <h3 class="display-6">I've given you enough rope to hang yourself with.</h3>
+    <footer class="blockquote-footer">SE3316a <cite title="Source Title">Jagath</cite></footer>
+
+</div>
+<app-navbar></app-navbar>
+
+<div class="imprinted-box">
+  <ng-container *ngIf="info == 0;else second"> 
+    <h1 class="display-4">  New to The Cosmos?</h1>
+    <p>
+      Welcome to our journey through the stars! Over just six days Noah Chait,<br>
+      a lowly programmer who has minimal experience in front-end programming<br>
+      has blossomed into a full stack developer. Join him as he documents his love<br>
+      for space and exploration. He utilized NASA's open picture library API to create<br>
+      a flawless user interface which allows you to store multiple collections of your<br>
+      favourite pictures and rate those collections as many times as you want.
+    </p>
+  </ng-container>
+  <ng-template #second>
+    <ng-container *ngIf="info === 'admin';else third">
+        <h1 class="display-4">  Welcome back to The Cosmos?</h1>
+        <p>
+        Welcome to our journey through the stars! Over just six days Noah Chait,<br>
+        a lowly programmer who has minimal experience in front-end programming<br>
+        has blossomed into a full stack developer. Join him as he documents his love<br>
+        for space and exploration. He utilized NASA's open picture library API to create<br>
+        a flawless user interface which allows you to store multiple collections of your<br>
+        favourite pictures and rate those collections as many times as you want.<br>
+        <br><br>
+        As a member of the community, you can publish delete and edit your own<br>
+        collections of NASA’s Pictures. You can also rate other collections within <br>
+        the community.<br>
+        <br><br>
+        
+      </p>
+
+    </ng-container>
+    </ng-template>
+    <ng-template #third>
+    <p>
+        You have logged in as the Admin. 
+    </p>
+  </ng-template>
+</div>

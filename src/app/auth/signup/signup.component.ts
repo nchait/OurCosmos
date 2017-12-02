@@ -3,6 +3,8 @@ import {NgForm} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router'; 
+
 
 @NgModule({
     imports: [
@@ -18,13 +20,23 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
   outcome='';
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService, private router: Router) { }
 
   ngOnInit() {
   }
   onSignup(form: NgForm){
     const email = form.value.email;
-    const username = form.value.username;
+    var x = email.split('@');
+    if (x.length!=2){
+      this.outcome = 'invalid email';
+      return
+    }
+    x=x[1].split('.');
+    if (x.length!=2){
+      this.outcome = 'invalid email';
+      return
+    }
+    const username = form.value.title;
     const password = form.value.password;
     this.authService.attemptSignup(this.onResponse.bind(this), email, username, password);    
   }
@@ -33,11 +45,12 @@ export class SignupComponent implements OnInit {
         this.outcome='Success';
       } else if (res == 208) {
         this.outcome='Email Taken';        
-      } else if (res == 204) {
-        this.outcome='Username Taken';        
-      } else {
+      }  else {
         this.outcome='inexplicable error please reload the page and try again';              
       }
+  }
+  onClick(){
+    this.router.navigate(['/signin']);
   }
 
 }

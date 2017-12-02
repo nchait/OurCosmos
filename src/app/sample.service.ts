@@ -14,8 +14,8 @@ export class SampleService {
         let pictures= new Array(100);
         let j: any;
         let res = data.body.collection.items;
-        console.log(res);
-        console.log(res[0].links[0].href);
+        //console.log(res);
+        //console.log(res[0].links[0].href);
 
         for(j in res) {
             pictures[j]=res[j].links[0].href;

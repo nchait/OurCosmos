@@ -1,15 +1,43 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a href="/" class="navbar-brand">Our Cosmos</a>
-    </div>
-    <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-            <li><a href="/" class="navbar-brand">My Cosmos</a></li>
-        </ul>
-        <ul class="navbar-nav navbar-right">
-            <li><a href="/" class="navbar-brand">My Settings</a></li>            
-        </ul>
+    <div class="navbar-header navbar-fixed-top">
+        <div class="collapse navbar-collapse navbar-fixed-top">
+            <ul class="nav navbar-nav">
+                <li class="navbar-brand">  </li>          
+                <li><a href="/" class="navbar-brand">Our Cosmos</a></li>
+
+                <ng-container *ngIf="info == 0;else second"> 
+                    <li><div href="/signin" class="navbar-brand">Sign In</div></li>                        
+                </ng-container>
+                <ng-template #second>
+                    <li><a href="/" class="navbar-brand">My Cosmos</a></li>                        
+                    <ng-container *ngIf="info === 'admin'">
+                        <li><a href="/" class="navbar-brand">The Cosmos</a></li>
+                    </ng-container>
+                    <li><a href="/" class="navbar-brand">Settings</a></li>                    
+                </ng-template>
+            </ul>
+
+            <ul class="navbar-nav navbar-center"> 
+                <li>
+                    <form class="navbar-form form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </li>                      
+            </ul>
+            <ul class="navbar-nav navbar-right">
+    
+               <ng-container *ngIf="info == 0;else fourth"> 
+                    <li><a href="/signup" class="navbar-brand">Sign Up</a></li>                        
+                </ng-container>
+                <ng-template #fourth>
+                    <li> <div (click)="logOut()" class="navbar-brand">Log Out</div></li>                        
+                </ng-template>     
+                <li><a href="/" class="navbar-brand"> </a></li>
+                
+            </ul>
+        </div>
     </div>
   </div>
 </nav>

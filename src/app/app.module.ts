@@ -4,7 +4,7 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { SampleComponent } from './sample/sample.component';
-import {SampleService} from './sample.service';
+import { SampleService } from './sample.service';
 import { Routes, RouterModule } from '@angular/router';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
@@ -12,12 +12,21 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthService } from './auth/auth.service';
+import { FooterComponent } from './footer/footer.component';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { HomePageComponent } from './home-page/home-page.component';
+import { ShowSearchComponent } from './pictures/show-search/show-search.component';
+import { SearchService } from './pictures/search.service';
 
 
 const appRoutes:Routes=[
   {
-    path: '',
+    path: 'generic',
     component: SampleComponent
+  },
+  {
+    path: '',
+    component: HomePageComponent
   },
   {
     path: 'signin',
@@ -26,6 +35,10 @@ const appRoutes:Routes=[
   {
     path: 'signup',
     component: SignupComponent
+  },
+  {
+    path: 'search',
+    component: ShowSearchComponent
   }
 ]
 
@@ -36,8 +49,11 @@ const appRoutes:Routes=[
     SampleComponent,
     SignupComponent,
     SigninComponent,
-    NavbarComponent
-  ],
+    NavbarComponent,
+    FooterComponent,
+    HomePageComponent,
+    ShowSearchComponent
+    ],
   imports: [
     RouterModule.forRoot(appRoutes),
     FormsModule,                               // <========== Add this line!
@@ -46,7 +62,7 @@ const appRoutes:Routes=[
     BrowserModule,
     HttpClientModule
   ],
-  providers: [SampleService, AuthService],
+  providers: [SampleService, AuthService, CookieService, SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
