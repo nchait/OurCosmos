@@ -18,6 +18,8 @@ export class ShowSearchComponent implements OnInit {
   response = '';
   fill = '';
   show = 0;
+  selected =0;
+  sampleTypeList= ['x', 'y', 'z'];
   pictures = new Array(100);
   constructor(private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
     //this._sampleService.getData(this.onResponse.bind(this),'');
@@ -26,6 +28,7 @@ export class ShowSearchComponent implements OnInit {
     this.info = this.authService.getInfo();
     console.log(this.info);
   }
+
   ngOnInit() {
   }
   onAuth(theInfo){
@@ -38,9 +41,9 @@ export class ShowSearchComponent implements OnInit {
   onClick() {
 
   }
-  onSelect(form: NgForm){
-    console.log(form);
-    console.log(form.value.pic);
+  onSelect(index){
+    console.log(index);
+    this.selected=1;
   }
   onSearch(form: NgForm){
     console.log(form.value.search);
