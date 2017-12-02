@@ -10,3 +10,7 @@
     display: block;
     margin: 0 auto;
 }
+.centered{
+    justify-content: center;
+    vertical-align: middle;
+}

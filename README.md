@@ -1,3 +1,5 @@
+#errors in plugins
+ng2-opd-popup, get rid of internal node_modules folder
 # Angular to Node HTTP GET
 
 A sample project to demostrate HTTP request from Angular to web service running on Node server

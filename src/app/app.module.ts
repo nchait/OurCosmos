@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
-
 import { AppComponent } from './app.component';
 import { SampleComponent } from './sample/sample.component';
 import { SampleService } from './sample.service';
@@ -17,6 +16,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ShowSearchComponent } from './pictures/show-search/show-search.component';
 import { SearchService } from './pictures/search.service';
+import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 
 
 const appRoutes:Routes=[
@@ -60,7 +60,11 @@ const appRoutes:Routes=[
     ReactiveFormsModule,
     NgbModule.forRoot(),    
     BrowserModule,
+    BootstrapModalModule,
     HttpClientModule
+  ],
+  entryComponents: [
+    SampleComponent
   ],
   providers: [SampleService, AuthService, CookieService, SearchService],
   bootstrap: [AppComponent]

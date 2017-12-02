@@ -28,6 +28,8 @@
     "auth0-js": "^8.11.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "ng2-bootstrap-modal": "^1.0.1",
+    "ng2-opd-popup": "^1.1.21",
     "rxjs": "^5.5.2",
     "ts-vector": "^0.1.0",
     "victor": "^1.1.0",

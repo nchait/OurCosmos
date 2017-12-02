@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {SampleService} from '../../sample.service';
+import {SampleComponent} from '../../sample/sample.component';
 import {SearchService} from '../search.service';
 import {NgForm} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router'; 
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { DialogService } from "ng2-bootstrap-modal";
 
 @Component({
   selector: 'app-show-search',
@@ -21,7 +24,7 @@ export class ShowSearchComponent implements OnInit {
   selected =0;
   sampleTypeList= ['x', 'y', 'z'];
   pictures = new Array(100);
-  constructor(private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
+  constructor(private dialogService:DialogService, private modalService: NgbModal, private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
     //this._sampleService.getData(this.onResponse.bind(this),'');
     this._searchService.getPrevData(this.onSearchReturn.bind(this));
     this.authService.checkCookie(this.onAuth.bind(this));

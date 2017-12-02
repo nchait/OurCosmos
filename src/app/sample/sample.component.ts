@@ -1,33 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import {SampleService} from '../sample.service';
+import {Component} from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { DialogComponent, DialogService } from "ng2-bootstrap-modal";
+export interface ConfirmModel {
+  title:string;
+  message:string;
+}
 
 @Component({
   selector: 'app-sample',
   templateUrl: './sample.component.html',
   styleUrls: ['./sample.component.css']
+  
 })
-export class SampleComponent implements OnInit {
-  // Initialize response with empty string
-  response = '';
-  fill = '';
-  pictures = new Array(100);
-  constructor(private _sampleService: SampleService) {
-    this._sampleService.getData(this.onResponse.bind(this),'');
-  }
-
-  ngOnInit() {
+export class SampleComponent extends DialogComponent<ConfirmModel, boolean> implements ConfirmModel  {
+  closeResult: string;
+  result;
+  title: string;
+  message: string;  
+  constructor(dialogService: DialogService) {
+    super(dialogService);      
   }
   
-  onClick() {
+  confirm() {
+    // we set dialog result as true on click on confirm button, 
+    // then we can get dialog result from caller code 
+    this.result = true;
+    this.close();
   }
-
-  onResponse(res) {
-    console.log(res);
-    this.pictures=res;
-
-
-  }
-
 }
-//  <img width="300" alt="Angular Logo" src="https://images-assets.nasa.gov/image/'Witch Head' Brews Baby Stars_10592267924_o/'Witch Head' Brews Baby Stars_10592267924_o~thumb.jpg">  
-
