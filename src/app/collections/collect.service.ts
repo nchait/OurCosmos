@@ -27,4 +27,17 @@ export class CollectService {
       callback_fun(data);
     });
   }
+  addCollections(callback_fun, item){
+    
+    let body = ({       
+      'doc': item
+    });
+    console.log(body);
+    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    console.log(body);    
+    this.http.post('/api/collections/'+item._id, body, {headers: this.headers}).subscribe(data => {
+      console.log(data);
+      callback_fun(data.message);
+    });
+  } 
 }

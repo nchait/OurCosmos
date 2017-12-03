@@ -56,8 +56,12 @@ export class ShowSearchComponent implements OnInit {
   onClick() {
 
   }
+  myCollection;
   addto(index){
-    console.log(index);
+    //console.log(index);
+    this.collections[index].pictures.push(this.pictures[this.currentpic]);
+    console.log(this.collections[index]);
+    this.collectService.addCollections(this.setCollections.bind(this),this.collections[index]);     
   }
   onSelect(index){
     this.show=0;
