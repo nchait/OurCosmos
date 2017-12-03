@@ -1,16 +1,26 @@
-.image-container{
-    width:auto;
-    height:15rem;
-    margin:1rem;
-    float: left;
+.hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
 }
-.the-image{
-    max-width:auto;
-    max-height: 100%;
-    display: block;
-    margin: 0 auto;
+.thumbnail {
+    padding: 0;
 }
-.centered{
-    justify-content: center;
-    vertical-align: middle;
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+}
+#slider-thumbs {
+    height: 500px;
+    overflow-y: scroll;
+    white-space: nowrap;
+}
+.no-border{
+    border: 0px;
+}
+.holder{ 
+    height: 500px;
+}
+.nobigger{
+    max-height: 500px;
 }

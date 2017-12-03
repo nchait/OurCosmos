@@ -3,35 +3,85 @@
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 <ng-container *ngIf="show == 1;else second">
-    <div *ngFor="let x of pictures; let i = index" >
-        <ng-container *ngIf="x != undefined;else nothing">                      
-            <button ion-item class="image-container" (click)="onSelect(i)"> 
-                <img class= "the-image" src = {{x}}/>                                   
-            </button>
-        </ng-container>   
-    </div> 
+    <div class="superBox">
+        <div class="container">
+            <div id="main_area">
+                <!-- Slider -->
+                <div class="row">
+                    <div class="col-sm-3" id="slider-thumbs">
+                        <!-- Bottom switcher of slider -->
+                        <ul class="hide-bullets" *ngFor="let x of pictures; let i = index" >
+                            <li class="col-sm-12">
+                                <ng-container *ngIf="x != undefined;else nothing">                      
+                                    <button ion-item class="thumbnail" (click)="onSelect(i)"> 
+                                        <img src = {{x}}/>                                   
+                                    </button>
+                                </ng-container> 
+                            </li>  
+                        </ul>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="col-xs-12" id="slider">
+                            <!-- Top part of the slider -->
+                            <div class="row holder">
+                                <div class="col-sm-8" id="carousel-bounding-box align-middle">
+                                    <div class="carousel slide" id="myCarousel">
+                                        <!-- Carousel items -->
+                                        <div class="carousel-inner ">
+                                            <div class="active item " data-slide-number= i>
+                                                <img class = "nobigger" src= {{pictures[currentpic]}}>
+                                            </div>
+                                        </div>
+                                        <!-- Carousel nav -->
+                                        <button class="left carousel-control no-border" (click)=prev()>
+                                            <span class="glyphicon glyphicon-chevron-left"></span>
+                                        </button>
+                                        <button class="right carousel-control no-border" (click)="next()">
+                                            <span class="glyphicon glyphicon-chevron-right"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Slider-->
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="info != 0">
+        <div class="btn-group" *ngFor="let y of collections; let j = index">
+                <button type="button" class="btn btn-primary" (click)="addto(j)">{{y.name}}</button>                    
+        </div> 
+        <button type="button" class="btn btn-primary" (click)="revealNew()">Create New Collection</button>        
+        <ng-container *ngIf="theNew != 0">
+            <h1>{{validity}}</h1>
+            <br>
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                    <form (ngSubmit)="onCreate(n)" #n="ngForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="descrip">Description</label>
+                            <input type="text" id="descrip" name="descrip" ngModel class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <label for="public">Public</label>
+                                <input type="checkbox" id="public" name="public" ngModel class="form-control">
+                        </div>
+                        <button class="btn btn-primary" type="submit">Create New Collection With this Image</button>
+                    </form>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
 </ng-container>
 <ng-template #second>
     searching...
 </ng-template>        
 <app-navbar></app-navbar>
-    
-<br>
-<br>
-<br>     
-<div class="container">
-        <div class="row">
-            <div align="center">
-                <div style="max-width: 400px; background-color: blueviolet;">
-                    <div class="col-md-12 col-sm-12 col-xs-12" style="background-color: blueviolet;">
-                        <div class="col-md-8 col-sm-8 col-xs-12" style="background-color: darkcyan;">
-                            <h1 style="color: white;">Some content</h1>
-                        </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12" style="background-color: blue;">
-                            <p style="color: white;">More content</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>

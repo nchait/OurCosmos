@@ -17,6 +17,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { ShowSearchComponent } from './pictures/show-search/show-search.component';
 import { SearchService } from './pictures/search.service';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
+import { CollectService } from './collections/collect.service';
 
 
 const appRoutes:Routes=[
@@ -66,7 +67,7 @@ const appRoutes:Routes=[
   entryComponents: [
     SampleComponent
   ],
-  providers: [SampleService, AuthService, CookieService, SearchService],
+  providers: [SampleService, AuthService, CookieService, SearchService, CollectService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

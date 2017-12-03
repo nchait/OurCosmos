@@ -1,0 +1,37 @@
+<form class="navbar-form form-inline my-2 my-lg-0" (ngSubmit)="onSearch(f)" #f="ngForm">
+    <input name="search" id="search" class="form-control mr-sm-2" type="text" ngModel placeholder="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<ng-container *ngIf="show == 1;else second">
+    <div *ngFor="let x of pictures; let i = index" >
+        <ng-container *ngIf="x != undefined;else nothing">                      
+            <button ion-item class="image-container" (click)="onSelect(i)"> 
+                <img class= "the-image" src = {{x}}/>                                   
+            </button>
+        </ng-container>   
+    </div> 
+</ng-container>
+<ng-template #second>
+    searching...
+</ng-template>        
+<app-navbar></app-navbar>
+    
+<br>
+<br>
+<br>     
+<div class="container">
+        <div class="row">
+            <div align="center">
+                <div style="max-width: 400px; background-color: blueviolet;">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="background-color: blueviolet;">
+                        <div class="col-md-8 col-sm-8 col-xs-12" style="background-color: darkcyan;">
+                            <h1 style="color: white;">Some content</h1>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12" style="background-color: blue;">
+                            <p style="color: white;">More content</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
