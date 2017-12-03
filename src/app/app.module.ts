@@ -18,6 +18,7 @@ import { ShowSearchComponent } from './pictures/show-search/show-search.componen
 import { SearchService } from './pictures/search.service';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { CollectService } from './collections/collect.service';
+import { PublicComponent } from './collections/public/public.component';
 
 
 const appRoutes:Routes=[
@@ -53,7 +54,8 @@ const appRoutes:Routes=[
     NavbarComponent,
     FooterComponent,
     HomePageComponent,
-    ShowSearchComponent
+    ShowSearchComponent,
+    PublicComponent
     ],
   imports: [
     RouterModule.forRoot(appRoutes),

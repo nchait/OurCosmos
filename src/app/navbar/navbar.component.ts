@@ -12,7 +12,7 @@ import {SearchService} from '../pictures/search.service';
 })
 export class NavbarComponent implements OnInit {
   info;
-  constructor(private _searchService: SearchService, private authService:AuthService, private router: Router, private cdr: ChangeDetectorRef) { 
+  constructor(private _searchService: SearchService, private authService:AuthService, private router: Router) { 
     this.authService.checkCookie(this.onResponse.bind(this));
     this.info = this.authService.getInfo();
   }  
@@ -29,9 +29,11 @@ export class NavbarComponent implements OnInit {
   logOut(){
     console.log('logout');
     this.authService.logOut();
-    this.router.navigate(['/']);
-    this.cdr.detectChanges();
-    this.router.navigate['/signin'];
+    this.goSignIn();
+    console.log('what');
+  }
+  goSignIn(){
+    this.router.navigate['/signin'];    
   }
   signIn(){
     console.log('signing in');

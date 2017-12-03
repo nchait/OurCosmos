@@ -42,8 +42,12 @@ export class SigninComponent implements OnInit {
         this.outcome='Success';
         this.router.navigate(['/']);
       } else if (res == 210) {
-        this.outcome='invalid email or you are not verified';        
-      }  else {
+        this.outcome='you are not verified';        
+      } else if (res == 211) {
+        this.outcome='invalid password';        
+      } else if (res == 212) {
+        this.outcome='invalid email';        
+      } else {
         this.outcome='inexplicable error please reload the page and try again';              
       }
   }

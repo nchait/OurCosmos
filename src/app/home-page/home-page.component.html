@@ -21,6 +21,11 @@
   </ng-container>
   <ng-template #second>
     <ng-container *ngIf="info === 'admin';else third">
+        You have logged in as the Admin. 
+
+    </ng-container>
+    </ng-template>
+    <ng-template #third>
         <h1 class="display-4">  Welcome back to The Cosmos?</h1>
         <p>
         Welcome to our journey through the stars! Over just six days Noah Chait,<br>
@@ -36,12 +41,6 @@
         <br><br>
         
       </p>
-
-    </ng-container>
-    </ng-template>
-    <ng-template #third>
-    <p>
-        You have logged in as the Admin. 
-    </p>
   </ng-template>
 </div>
+<app-public></app-public>

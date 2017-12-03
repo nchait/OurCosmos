@@ -22,6 +22,11 @@ export class CollectService {
       callback_fun(data.message);
     });
   } 
+  getPublics(callback_fun){
+    this.http.get('/api/collections').subscribe(data => {
+      callback_fun(data);
+    });
+  }
   getCollections(callback_fun, info: String){
     this.http.get('/api/collections/'+info).subscribe(data => {
       callback_fun(data);

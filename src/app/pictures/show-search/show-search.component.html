@@ -52,12 +52,13 @@
     </div>
 
     <ng-container *ngIf="info != 0">
+        <h1>{{validity}}</h1>
         <div class="btn-group" *ngFor="let y of collections; let j = index">
                 <button type="button" class="btn btn-primary" (click)="addto(j)">{{y.name}}</button>                    
         </div> 
-        <button type="button" class="btn btn-primary" (click)="revealNew()">Create New Collection</button>        
+        <br><br>
+        <button type="button" class="btn btn-primary" (click)="revealNew(1)">Create New Collection</button>        
         <ng-container *ngIf="theNew != 0">
-            <h1>{{validity}}</h1>
             <br>
             <div class="row">
                 <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
@@ -75,6 +76,8 @@
                                 <input type="checkbox" id="public" name="public" ngModel class="form-control">
                         </div>
                         <button class="btn btn-primary" type="submit">Create New Collection With this Image</button>
+                        <br><br>
+                        <button class="btn btn-primary" (click)=revealNew(0)>Close</button>
                     </form>
                 </div>
             </div>

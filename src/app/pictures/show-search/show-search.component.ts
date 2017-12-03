@@ -61,7 +61,16 @@ export class ShowSearchComponent implements OnInit {
     //console.log(index);
     this.collections[index].pictures.push(this.pictures[this.currentpic]);
     console.log(this.collections[index]);
-    this.collectService.addCollections(this.setCollections.bind(this),this.collections[index]);     
+    this.collectService.addCollections(this.confirmAdd.bind(this),this.collections[index]);     
+  }
+  confirmAdd(res){
+    if (res==222){
+      this.validity = 'error serverside!';
+    } else if (res==200){
+      this.validity = 'Success';
+    }else {
+      this.validity = 'Inexplicable Error';
+    }  
   }
   onSelect(index){
     this.show=0;
@@ -87,8 +96,8 @@ export class ShowSearchComponent implements OnInit {
     this.show=1;
     this.currentpic=0;
   }
-  revealNew(){
-    this.theNew=1;
+  revealNew(x){
+    this.theNew=x;
   }
   onCreate(form: NgForm){
     this.collectService.newCollection(this.afterCreate.bind(this), 
@@ -104,6 +113,8 @@ export class ShowSearchComponent implements OnInit {
       this.validity = 'choose a new name';
     } else if (res==200){
       this.validity = 'Success';
+      this.collectService.getCollections(this.setCollections.bind(this),this.info) 
+      this.theNew=0;      
     }else {
       this.validity = 'Inexplicable Error';
     }
