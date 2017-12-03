@@ -32,7 +32,7 @@ export class ViewCollectionComponent implements OnInit {
   collectionsO;
   owner;
   toEdit=-1;
-  numbers = [0,1,2,3,4,5,6,7,8,9,10];
+  numbers = [1,2,3,4,5,6,7,8,9,10];
   rateValidity;
   constructor(private collectService: CollectService, private dialogService:DialogService, private modalService: NgbModal, private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
     //this._sampleService.getData(this.onResponse.bind(this),'');
@@ -47,8 +47,18 @@ export class ViewCollectionComponent implements OnInit {
     this.toEdit=index;
   }
   rate(collO, value){
-    console.log(collO);
-    console.log(value);
+    //console.log(collO);
+    //console.log(value);
+    this.collectService.rateCollection(this.onRate.bind(this), this.collectionsO[collO]._id, this.info, value+1 );     
+  }
+  onRate(res){
+    console.log('result from rate: '+ res);
+    if (res==200){
+      this.rateValidity = 'rating submitted';
+    } else if (res==230){
+      this.rateValidity = 'rating adjusted';
+    }
+    this.refresh(res);
   }
   onChange(form: NgForm){
     this.collections[this.toEdit].descrip = form.value.myDescrip;

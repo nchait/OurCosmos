@@ -22,6 +22,19 @@ export class CollectService {
       callback_fun(data.message);
     });
   } 
+  rateCollection (callback_fun, collId, myId, val){
+    let body = ({       
+      'collId': collId,
+      'userId': myId,
+      'rate':val
+    });
+    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    console.log(body);    
+    this.http.post('/api/rating/', body, {headers: this.headers}).subscribe(data => {
+      console.log(data);
+      callback_fun(data.message);
+    });
+  }
   deleteCollection(callback_fun, id){
     this.http.delete('/api/collections/'+id).subscribe(data => {
       callback_fun(data);

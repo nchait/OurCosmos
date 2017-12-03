@@ -169,9 +169,11 @@
                     {{x.publicRating}}              
                 </ng-template>
                 <br>
-                <div class="btn-group" *ngFor="let y of numbers; let j = index">
+                <ng-container *ngIf="info != 0">
+                  <div class="btn-group" *ngFor="let y of numbers; let j = index">
                     <button type="button" class="btn btn-primary" (click)="rate(i, j)">{{y}}</button>                   
                   </div>
+                </ng-container>
               </td>        
             </tr>
           </ng-container>
