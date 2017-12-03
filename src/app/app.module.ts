@@ -20,9 +20,18 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { CollectService } from './collections/collect.service';
 import { PublicComponent } from './collections/public/public.component';
 import { ViewCollectionComponent } from './collections/view-collection/view-collection.component';
+import { DocumentsComponent } from './settings/documents/documents.component';
+import { SettingsComponent } from './settings/settings/settings.component';
+import { DocumentationService } from './settings/documentation.service';
+import { DmcaComponent } from './settings/dmca/dmca.component';
+import { DocManagementComponent } from './settings/doc-management/doc-management.component';
 
 
 const appRoutes:Routes=[
+  {
+    path: 'settings',
+    component: SettingsComponent
+  },
   {
     path: 'generic',
     component: SampleComponent
@@ -61,7 +70,11 @@ const appRoutes:Routes=[
     HomePageComponent,
     ShowSearchComponent,
     PublicComponent,
-    ViewCollectionComponent
+    ViewCollectionComponent,
+    DocumentsComponent,
+    SettingsComponent,
+    DmcaComponent,
+    DocManagementComponent
     ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -75,7 +88,7 @@ const appRoutes:Routes=[
   entryComponents: [
     SampleComponent
   ],
-  providers: [SampleService, AuthService, CookieService, SearchService, CollectService],
+  providers: [SampleService, AuthService, CookieService, SearchService, CollectService, DocumentationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

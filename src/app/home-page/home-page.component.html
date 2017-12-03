@@ -63,7 +63,7 @@
           <td>{{x.name}}</td>
           <td>{{x.descrip}}</td>
           <td>
-            <ng-container *ngIf ="x.publicRating==undefined; else Second">
+            <ng-container *ngIf ="x.publicRating==undefined || x.publicRating==0; else Second">
               Be the first to rate!
             </ng-container>
             <ng-template #Second>

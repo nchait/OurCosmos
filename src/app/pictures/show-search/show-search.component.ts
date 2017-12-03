@@ -113,7 +113,7 @@ export class ShowSearchComponent implements OnInit {
       this.validity = 'choose a new name';
     } else if (res==200){
       this.validity = 'Success';
-      this.collectService.getCollections(this.setCollections.bind(this),this.info) 
+      this.collectService.getCollections(this.setCollections.bind(this),this.info); 
       this.theNew=0;      
     }else {
       this.validity = 'Inexplicable Error';

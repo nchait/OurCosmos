@@ -7,14 +7,14 @@
                 <li><a routerLink="/" class="navbar-brand">Our Cosmos</a></li>
 
                 <ng-container *ngIf="info == 0;else second"> 
-                    <li><div routerLink="/signin" class="navbar-brand">Sign In</div></li>                        
-                </ng-container>
+                        <li><div routerLink="/signin" class="navbar-brand">Sign In</div></li>                        
+                        <li><div routerLink="/mycosmos" class="navbar-brand">View Cosmos</div></li>                        
+                    </ng-container>
                 <ng-template #second>
                     <li><a routerLink="/mycosmos" class="navbar-brand">My Cosmos</a></li>                        
                     <ng-container *ngIf="info === 'admin'">
-                        <li><a href="/" class="navbar-brand">The Cosmos</a></li>
+                        <li><a href="/settings" class="navbar-brand">Settings</a></li>                    
                     </ng-container>
-                    <li><a href="/" class="navbar-brand">Settings</a></li>                    
                 </ng-template>
                 <li><a routerLink="/search" class="navbar-brand">Search</a></li>                                    
             </ul>

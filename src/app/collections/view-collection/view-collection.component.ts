@@ -97,6 +97,9 @@ export class ViewCollectionComponent implements OnInit {
     this.collectService.getCollections(this.setCollections.bind(this),this.info)     
   }
   index;
+  report(index) {
+    //this.collectService.sendDMCA(this.refresh.bind(this), this.collectionsO[index]._id);    
+  }  
   view(index, owner) {
     console.log()
     this.currentpic =0;    
@@ -123,12 +126,27 @@ export class ViewCollectionComponent implements OnInit {
     }
   }
   showPics(res){
-    console.log(res);
-    if (res>10){
-      this.collectionsO=res.slice(0,10);
-    }else {
-      this.collectionsO=res;      
-    }
+    var swapped;
+    do {
+        swapped = false;
+        for (var i=0; i < res.length-1; i++) {
+          var x1 = res[i].publicRating;
+          if (x1==undefined){
+            x1=0;
+          }
+          var x2 = res[i+1].publicRating;
+          if (x2==undefined){
+            x2=0;
+          }
+          if (x1< x2) {
+              var temp = res[i];
+              res[i] = res[i+1];
+              res[i+1] = temp;
+              swapped = true;
+          }
+        }
+    } while (swapped);
+    this.collectionsO=res;      
 
     console.log(this.collectionsO.length);
     

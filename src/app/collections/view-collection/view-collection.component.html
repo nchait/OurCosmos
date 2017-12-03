@@ -56,7 +56,8 @@
                 <button type="button" class="btn btn-primary" (click)="addto(j)">{{y.name}}</button>                    
         </div> 
         <br><br>
-        <button type="button" class="btn btn-primary" (click)="revealNew(1)">Create New Collection</button>        
+        <button type="button" class="btn btn-primary" (click)="revealNew(1)">Create New Collection With This Image</button>        
+        <br><br>
         <ng-container *ngIf="theNew != 0">
             <br>
             <div class="row">
@@ -158,11 +159,12 @@
               <td>{{x.descrip}}</td>
               <td>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-primary" (click)="view(i, false)">view</button>                    
-                </div>
+                        <button type="button" class="btn btn-primary" (click)="view(i, false)">view</button>                    
+                        <button type="button" class="btn btn-primary" (click)="report(i)">Report</button>                    
+                    </div>
               </td>
               <td>
-                <ng-container *ngIf ="x.publicRating==undefined; else Second">
+                <ng-container *ngIf ="x.publicRating==undefined || x.publicRating==0; else Second">
                   Be the first to rate!
                 </ng-container>
                 <ng-template #Second>
@@ -171,8 +173,8 @@
                 <br>
                 <ng-container *ngIf="info != 0">
                   <div class="btn-group" *ngFor="let y of numbers; let j = index">
-                    <button type="button" class="btn btn-primary" (click)="rate(i, j)">{{y}}</button>                   
-                  </div>
+                        <button type="button" class="btn btn-primary" (click)="rate(i, j)">{{y}}</button>                   
+                    </div>
                 </ng-container>
               </td>        
             </tr>
