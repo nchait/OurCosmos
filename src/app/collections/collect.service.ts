@@ -22,6 +22,25 @@ export class CollectService {
       callback_fun(data.message);
     });
   } 
+  deleteCollection(callback_fun, id){
+    this.http.delete('/api/collections/'+id).subscribe(data => {
+      callback_fun(data);
+    });
+  }
+  updateCollection(callback_fun, item){
+    
+    let body = ({       
+      'doc': item
+    });
+    //console.log(body);
+    this.headers = new Headers({ 'Content-Type': 'application/json' });
+    //console.log(body);    
+    this.http.put('/api/collections/', body, {headers: this.headers}).subscribe(data => {
+      //console.log(data);
+      callback_fun(data.message);
+    });
+  } 
+  
   getPublics(callback_fun){
     this.http.get('/api/collections').subscribe(data => {
       callback_fun(data);

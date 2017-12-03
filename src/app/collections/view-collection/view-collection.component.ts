@@ -11,6 +11,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { DialogService } from "ng2-bootstrap-modal";
 import { CollectService } from '../../collections/collect.service';
 import { concat } from 'rxjs/observable/concat';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-view-collection',
@@ -24,36 +25,81 @@ export class ViewCollectionComponent implements OnInit {
   fill = '';
   show = 0;
   selected =0;
-  sampleTypeList= ['x', 'y', 'z'];
   pictures = new Array(100);
   currentpic = 1;
   theNew=0;
   collections;
   collectionsO;
-  
+  owner;
+  toEdit=-1;
+  numbers = [0,1,2,3,4,5,6,7,8,9,10];
+  rateValidity;
   constructor(private collectService: CollectService, private dialogService:DialogService, private modalService: NgbModal, private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
     //this._sampleService.getData(this.onResponse.bind(this),'');
     //this._searchService.getPrevData(this.onSearchReturn.bind(this));
     this.authService.checkCookie(this.onAuth.bind(this));
     this.collectService.getPublics(this.showPics.bind(this));
-    this.collectService.getPublics(this.setCollections.bind(this));    
     this.info = this.authService.getInfo();
     console.log(this.info);
-    this.currentpic =1;
+    this.currentpic =1;}
+  ngOnInit(  ){}
+  edit(index){
+    this.toEdit=index;
   }
+  rate(collO, value){
+    console.log(collO);
+    console.log(value);
+  }
+  onChange(form: NgForm){
+    this.collections[this.toEdit].descrip = form.value.myDescrip;
+    this.collections[this.toEdit].open = form.value.myPublic;
+    this.collections[this.toEdit].name = form.value.myName;
+    this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.toEdit]); 
+    this.toEdit=-1;   
+  }
+  deleteColl(index){
+    this.collectService.deleteCollection(this.refresh.bind(this), this.collections[index]._id);     
+  }
+  deleteFromColl(){
+    var newArray = [];
+    this.pictures.forEach(element => {
+      if (this.pictures[this.currentpic]==element){
 
-  ngOnInit() {
+      }else{
+        newArray.push(element);
+      }
+    });
+    console.log(this.pictures);
+    console.log(newArray);
+    if (newArray.length == 0){
+      this.validity = "you cant delete your last picture!";
+      return;
+    }
+    this.pictures=newArray;
+    this.collections[this.index].pictures=newArray;
+    this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.index])
   }
+  editAdmin(form: NgForm){
+
+  }
+  refresh(res){
+    this.collectService.getPublics(this.showPics.bind(this)); 
+    this.collectService.getCollections(this.setCollections.bind(this),this.info)     
+  }
+  index;
   view(index, owner) {
     console.log()
     this.currentpic =0;    
-    this.show=1
+    this.show=1;
+    this.owner=owner;
     if (owner){
+      this.index=index;
       console.log(this.collections);
-      this.pictures=this.collections[this.currentpic].pictures;
+      this.pictures=this.collections[index].pictures;
+      
     } else {
       console.log(this.collectionsO);      
-      this.pictures=this.collectionsO[this.currentpic].pictures;
+      this.pictures=this.collectionsO[index].pictures;
     }
   }
   onAuth(theInfo){
@@ -82,9 +128,6 @@ export class ViewCollectionComponent implements OnInit {
     this.collections=res.body;
     console.log ('setcollections called, '+ this.collections);
     console.log(this.info);
-  }
-  onClick() {
-
   }
   myCollection;
   addto(index){

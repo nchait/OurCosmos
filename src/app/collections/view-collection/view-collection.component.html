@@ -1,4 +1,7 @@
 <h1> Choose a collection to view </h1>
+<ng-container *ngIf="owner == true">
+  <button class="btn btn-red" (click)="deleteFromColl()"> Delete all instances of this picture from your collection!</button>
+</ng-container>
 <ng-container *ngIf="show == 1;else second">
     <div class="superBox">
         <div class="container">
@@ -87,6 +90,7 @@
                 <tr>
                   <th class="text-center">Name</th>
                   <th class="text-center">Descripton</th>
+                  <th class="text-center">Public</th>                  
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -95,18 +99,47 @@
                 <tr>
                   <td>{{x.name}}</td>
                   <td>{{x.descrip}}</td>
+                  <td>{{x.open}}</td>
                   <td>
                     <div class="btn-group">
-                      <button type="button" class="btn btn-primary" (click)="view(i, true)">view</button>                    
-                    </div>
+                        <button type="button" class="btn btn-primary" (click)="view(i, true)">View</button>                    
+                        <button type="button" class="btn btn-primary" (click)="edit(i)">Edit</button>                    
+                        <button type="button" class="btn btn-primary" (click)="deleteColl(i)">Delete</button>                    
+                      </div>
                   </td>       
                 </tr>
               </tbody>
             </table>
           </div>    
     </ng-container>
+    <ng-container *ngIf="toEdit != -1">
+        <br>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <form (ngSubmit)="onChange(m)" #m="ngForm">
+                    <div class="form-group">
+                        <label for="myName">Name</label>
+                        <input type="text" id="myName" name="myName" ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="myDescrip">Description</label>
+                        <input type="text" id="myDescrip" name="myDescrip" ngModel class="form-control">
+                    </div>
+                    <div class="form-group">
+                            <label for="myPublic">Public</label>
+                            <input type="checkbox" id="myPublic" name="myPublic" ngModel class="form-control">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit Changes</button>
+                    <br><br>
+                    <button class="btn btn-primary" (click)=edit(-1)>Close</button>
+                </form>
+            </div>
+        </div>
+    </ng-container>
 <ng-template #second>
 </ng-template>   
+<br><br>
+<h1>{{rateValidity}}</h1>
 <br><br>
   <div class="container">            
       <table class="table table-bordered">
@@ -119,24 +152,29 @@
           </tr>
         </thead>
         <tbody  *ngFor="let x of collectionsO; let i = index">
-                
-          <tr>
-            <td>{{x.name}}</td>
-            <td>{{x.descrip}}</td>
-            <td>
-              <div class="btn-group">
-                <button type="button" class="btn btn-primary" (click)="view(i, false)">view</button>                    
-              </div>
-            </td>
-            <td>
-              <ng-container *ngIf ="x.publicRating==undefined; else Second">
-                Be the first to rate!
-              </ng-container>
-              <ng-template #Second>
-                  {{x.publicRating}}              
-              </ng-template>
-            </td>        
-          </tr>
+          <ng-container *ngIf="x.creator != info">      
+            <tr>
+              <td>{{x.name}}</td>
+              <td>{{x.descrip}}</td>
+              <td>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary" (click)="view(i, false)">view</button>                    
+                </div>
+              </td>
+              <td>
+                <ng-container *ngIf ="x.publicRating==undefined; else Second">
+                  Be the first to rate!
+                </ng-container>
+                <ng-template #Second>
+                    {{x.publicRating}}              
+                </ng-template>
+                <br>
+                <div class="btn-group" *ngFor="let y of numbers; let j = index">
+                    <button type="button" class="btn btn-primary" (click)="rate(i, j)">{{y}}</button>                   
+                  </div>
+              </td>        
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>    
