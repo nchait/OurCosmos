@@ -6,12 +6,13 @@ mongoose.connect('mongodb://localhost:27017/bears', { useMongoClient : true });
 var Bear        = require('./app/models/bear');
 var User        = require('./app/models/user');
 var Collection  = require('./app/models/collection');
-var Collection  = require('./app/models/collection')
+var Rating      = require('./app/models/rating')
 var request     = require('request');
 var nodemailer  = require('nodemailer');
 var bcrypt      = require ('bcrypt');
 var auth        = require('express-jwt-token');
 var jwt         = require('jsonwebtoken');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -25,10 +26,13 @@ get(api//users/verify/:user_id) - verify user
 get(/nasa/search/:searchTerms) - search with query
 get(/nasa/search/) - no query search
 get(/users/cookie/:user_id) check if my cookie is valid
+delete('/collections/:id') delete collection
 post('/collections/:id') add to a collection
 get('/collections/:id') get a users collections
 post('/collections') add a collection
-get('/collections') get public collection
+get('/collections') get public collections
+put('/collections') edit my collections attributs or delete a picture from them
+post('/collections/rating') post a new rating or replace an old one
 
 
 
@@ -43,6 +47,7 @@ message codes
 220         collection name taken
 221         no collections found
 222         error adding to collection
+230         rating replaced
 
 my functions                        description                     
 checkUsername()                     is username taken?                          
@@ -213,7 +218,7 @@ router.route('/users/signin')
                 });
             }else{
                 if(docs[0].verification==1){
-                    res.json({message: 212});//username not found
+                    res.json({message: 212});//not verified
                     return; 
                 }
                 res.json({message: 210});//username not found
@@ -358,12 +363,20 @@ router.route('/collections')
         });
     })
     .put(function(req, res) {
-        Collection.find(function(err, collections) {
+        console.log(req.body);
+        Collection.findById(req.body.doc._id, function(err, collection) {
             if (err)
                 res.send(err);
-
-            res.json(collections);
-        });
+            collection.pictures = req.body.doc.pictures;
+            collection.descrip = req.body.doc.descrip;
+            collection.name = req.body.doc.name;
+            collection.open = req.body.doc.open;
+            collection.save(function(err) {
+            if (err)
+                res.send(err);  
+            });
+            res.json({message: 200});
+        });//*/
     })
     .post(function(req, res) {
         checkCollectionName(req,res);
@@ -380,6 +393,7 @@ function checkCollectionName(req, res){//step 2
         collection.descrip = req.body.descrip;
         collection.open = req.body.open;
         collection.pictures = [req.body.picture];
+        collection.publicRating = 0;
         collection.creator = req.body.creator;
         console.log(collection);
         collection.save(function(err) {
@@ -392,6 +406,16 @@ function checkCollectionName(req, res){//step 2
 }
 router.route('/collections/:id')
 
+    .delete(function(req, res) {
+        Collection.remove({
+            _id: req.params.id
+        }, function(err, collection) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 200 });
+        });
+    })
     .get(function(req, res) {
         Collection.find({ 'creator': req.params.id }, function (err, docs) {
             if(docs[0]==null){
@@ -402,6 +426,14 @@ router.route('/collections/:id')
                 body: docs
             });
 
+        });
+    })
+    .put(function(req, res) {
+        Collection.find(function(err, collections) {
+            if (err)
+                res.send(err);
+
+            res.json(collections);
         });
     })
     .post(function(req, res) {
@@ -419,6 +451,79 @@ router.route('/collections/:id')
             res.json({message: 200});
         });//*/
     });
+    router.route('/rating/')
+        .put(function(req, res) {
+        Rating.find(function(err, ratings) {
+            if (err)
+                res.send(err);
+
+            res.json(ratings);
+            });
+        })
+        .post(function(req, res) {
+            //console.log(req.body);//collId, myId, val
+            Rating.find({ 
+                                'collectionId': req.body.collId,
+                                'userId': req.body.userId
+                                    }, function (err, docs) {
+                console.log(docs);
+                if(docs[0]==undefined){
+                    var rating = new Rating();      // create a new instance of the User model
+                    rating.collectionId = req.body.collId;
+                    rating.userId = req.body.userId;
+                    rating.rate = req.body.rate;
+                    console.log(rating);
+                    rating.save(function(err) {
+                    if (err)
+                        res.send(err);  
+                        updateRating(req.body.collId);
+
+                    });
+                    res.json({message: 200});
+                    return;
+                }//*/
+                console.log(docs[0]);
+                docs[0].rate = req.body.rate;
+                docs[0].save(function(err) {
+                if (err)
+                    res.send(err); 
+                    updateRating(req.body.collId);
+                });
+                res.json({message: 230});//*/
+    
+                });
+        })
+        .delete(function(req, res) {
+        console.log(req);
+        Rating.remove({
+            _id: req.body.id
+        }, function(err, collection) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 200 });
+        });
+    });
+    function updateRating(collId){
+        console.log('check');
+        Rating.find({ 
+                        'collectionId': collId,
+                        }, function (err, docs) {
+            var sum=0;
+            for (var i = 0; i < docs.length; i++){
+                sum+=docs[i].rate;
+            }
+            
+            Collection.findById(collId,function (err, coll) {
+                console.log(sum);
+                console.log(docs.length);
+                coll.publicRating=String(sum/docs.length);
+                console.log(coll.publicRating);
+                coll.save(function(err) {
+                });
+            });
+        });
+    }
 app.use('/api', router);
 
 

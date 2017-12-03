@@ -7,7 +7,7 @@ var CollectionSchema   = new Schema({
     name: String,
     pictures: [String],
     creator:String,
-    publicRating: Number,
+    publicRating: String,
     open: Boolean,
     descrip: String
 });
