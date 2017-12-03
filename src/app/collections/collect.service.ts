@@ -14,11 +14,11 @@ export class CollectService {
       'picture': image,
       'creator': creator
     });
-    console.log(body);
+    //console.log(body);
     this.headers = new Headers({ 'Content-Type': 'application/json' });
-    console.log(body);    
+    //console.log(body);    
     this.http.post('/api/collections/', body, {headers: this.headers}).subscribe(data => {
-      console.log(data);
+      //console.log(data);
       callback_fun(data.message);
     });
   } 
@@ -29,6 +29,7 @@ export class CollectService {
   }
   getCollections(callback_fun, info: String){
     this.http.get('/api/collections/'+info).subscribe(data => {
+      console.log('the collection data: '+data);
       callback_fun(data);
     });
   }

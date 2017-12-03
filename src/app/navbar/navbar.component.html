@@ -4,29 +4,29 @@
         <div class="collapse navbar-collapse navbar-fixed-top">
             <ul class="nav navbar-nav">
                 <li class="navbar-brand">  </li>          
-                <li><a href="/" class="navbar-brand">Our Cosmos</a></li>
+                <li><a routerLink="/" class="navbar-brand">Our Cosmos</a></li>
 
                 <ng-container *ngIf="info == 0;else second"> 
-                    <li><div href="/signin" class="navbar-brand">Sign In</div></li>                        
+                    <li><div routerLink="/signin" class="navbar-brand">Sign In</div></li>                        
                 </ng-container>
                 <ng-template #second>
-                    <li><a href="/" class="navbar-brand">My Cosmos</a></li>                        
+                    <li><a routerLink="/mycosmos" class="navbar-brand">My Cosmos</a></li>                        
                     <ng-container *ngIf="info === 'admin'">
                         <li><a href="/" class="navbar-brand">The Cosmos</a></li>
                     </ng-container>
                     <li><a href="/" class="navbar-brand">Settings</a></li>                    
                 </ng-template>
-                <li><a href="/search" class="navbar-brand">Search</a></li>                                    
+                <li><a routerLink="/search" class="navbar-brand">Search</a></li>                                    
             </ul>
             <ul class="navbar-nav navbar-right">
     
                <ng-container *ngIf="info == 0;else fourth"> 
-                    <li><a href="/signup" class="navbar-brand">Sign Up</a></li>                        
+                    <li><a routerLink="/signup" class="navbar-brand">Sign Up</a></li>                        
                 </ng-container>
                 <ng-template #fourth>
-                    <li> <div (click)="logOut()" class="navbar-brand">Log Out</div></li>                        
+                    <li> <div routerLink="/signin" class="navbar-brand">Log Out</div></li>                        
                 </ng-template>     
-                <li><a href="/" class="navbar-brand"> </a></li>
+                <li><a class="navbar-brand"> </a></li>
                 
             </ul>
         </div>

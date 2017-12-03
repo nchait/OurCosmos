@@ -19,6 +19,7 @@ import { SearchService } from './pictures/search.service';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { CollectService } from './collections/collect.service';
 import { PublicComponent } from './collections/public/public.component';
+import { ViewCollectionComponent } from './collections/view-collection/view-collection.component';
 
 
 const appRoutes:Routes=[
@@ -41,6 +42,10 @@ const appRoutes:Routes=[
   {
     path: 'search',
     component: ShowSearchComponent
+  },  
+  {
+    path: 'mycosmos',
+    component: ViewCollectionComponent
   }
 ]
 
@@ -55,7 +60,8 @@ const appRoutes:Routes=[
     FooterComponent,
     HomePageComponent,
     ShowSearchComponent,
-    PublicComponent
+    PublicComponent,
+    ViewCollectionComponent
     ],
   imports: [
     RouterModule.forRoot(appRoutes),

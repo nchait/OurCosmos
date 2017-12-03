@@ -1,7 +1,4 @@
-<form class="navbar-form form-inline my-2 my-lg-0" (ngSubmit)="onSearch(f)" #f="ngForm">
-    <input name="search" id="search" class="form-control mr-sm-2" type="text" ngModel placeholder="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
+<h1> Choose a collection to view </h1>
 <ng-container *ngIf="show == 1;else second">
     <div class="superBox">
         <div class="container">
@@ -50,7 +47,6 @@
             </div>
         </div>
     </div>
-
     <ng-container *ngIf="info != 0">
         <h1>{{validity}}</h1>
         <div class="btn-group" *ngFor="let y of collections; let j = index">
@@ -82,9 +78,67 @@
                 </div>
             </div>
         </ng-container>
+      </ng-container>  
+    </ng-container>   
+    <ng-container *ngIf="info != 0">        
+        <div class="container">            
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center">Name</th>
+                  <th class="text-center">Descripton</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody  *ngFor="let x of collections; let i = index">
+                      
+                <tr>
+                  <td>{{x.name}}</td>
+                  <td>{{x.descrip}}</td>
+                  <td>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary" (click)="view(i, true)">view</button>                    
+                    </div>
+                  </td>       
+                </tr>
+              </tbody>
+            </table>
+          </div>    
     </ng-container>
-</ng-container>
 <ng-template #second>
-    searching...
-</ng-template>        
+</ng-template>   
+<br><br>
+  <div class="container">            
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">Descripton</th>
+            <th class="text-center">Actions</th>
+            <th class="text-center">Rating</th>
+          </tr>
+        </thead>
+        <tbody  *ngFor="let x of collectionsO; let i = index">
+                
+          <tr>
+            <td>{{x.name}}</td>
+            <td>{{x.descrip}}</td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary" (click)="view(i, false)">view</button>                    
+              </div>
+            </td>
+            <td>
+              <ng-container *ngIf ="x.publicRating==undefined; else Second">
+                Be the first to rate!
+              </ng-container>
+              <ng-template #Second>
+                  {{x.publicRating}}              
+              </ng-template>
+            </td>        
+          </tr>
+        </tbody>
+      </table>
+    </div>    
 <app-navbar></app-navbar>
+<br><br>

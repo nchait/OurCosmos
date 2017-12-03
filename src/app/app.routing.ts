@@ -5,6 +5,7 @@ import { SampleComponent } from './sample/sample.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ShowSearchComponent } from './pictures/show-search/show-search.component';
+import { ViewCollectionComponent } from './collections/view-collection/view-collection.component';
 
 const appRoutes: Routes = [
   // { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -13,6 +14,7 @@ const appRoutes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'generic', component: SampleComponent },
   { path: 'search', component: ShowSearchComponent },
+  { path: 'mycosmos', component: ViewCollectionComponent},
   
    // otherwise redirect to home
    { path: '**', redirectTo: '' }

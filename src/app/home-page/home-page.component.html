@@ -43,4 +43,34 @@
       </p>
   </ng-template>
 </div>
-<app-public></app-public>
+<a routerLink="/mycosmos">
+  <button class="btn btn-primary">
+      view the collections here!
+  </button>
+</a>
+<div class="container">            
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="text-center">Name</th>
+          <th class="text-center">Descripton</th>
+          <th class="text-center">Rating</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let x of collections; let i = index">
+              
+        <tr>
+          <td>{{x.name}}</td>
+          <td>{{x.descrip}}</td>
+          <td>
+            <ng-container *ngIf ="x.publicRating==undefined; else Second">
+              Be the first to rate!
+            </ng-container>
+            <ng-template #Second>
+                {{x.publicRating}}              
+            </ng-template>
+          </td>        
+        </tr>
+      </tbody>
+    </table>
+  </div>

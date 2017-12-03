@@ -17,7 +17,9 @@ this.router.navigate(['/']);
 export class SigninComponent implements OnInit {
 
   outcome='';
-  constructor(private authService:AuthService, private router: Router) { }
+  constructor(private authService:AuthService, private router: Router) {
+    this.authService.logOut();    
+   }
 
   ngOnInit() {
   }

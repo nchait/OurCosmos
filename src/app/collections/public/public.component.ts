@@ -8,19 +8,19 @@ import { CollectService } from '../collect.service';
   styleUrls: ['./public.component.css']
 })
 export class PublicComponent implements OnInit {
-  collections;
+  collectionsO;
   constructor(private collectService: CollectService) {
     this.collectService.getPublics(this.show.bind(this))
   }
   show(res){
     console.log(res);
     if (res>10){
-      this.collections=res.slice(0,10);
+      this.collectionsO=res.slice(0,10);
     }else {
-      this.collections=res;      
+      this.collectionsO=res;      
     }
 
-    console.log(this.collections.length);
+    console.log(this.collectionsO.length);
     
   }
   ngOnInit() {
