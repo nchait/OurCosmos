@@ -5,6 +5,7 @@ var mongoose    = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/bears', { useMongoClient : true });
 var Bear        = require('./app/models/bear');
 var User        = require('./app/models/user');
+var Collection  = require('./app/models/collection');
 var Collection  = require('./app/models/collection')
 var request     = require('request');
 var nodemailer  = require('nodemailer');
@@ -24,6 +25,12 @@ get(api//users/verify/:user_id) - verify user
 get(/nasa/search/:searchTerms) - search with query
 get(/nasa/search/) - no query search
 get(/users/cookie/:user_id) check if my cookie is valid
+post('/collections/:id') add to a collection
+get('/collections/:id') get a users collections
+post('/collections') add a collection
+get('/collections') get public collection
+
+
 
 message codes
 200         success
@@ -33,6 +40,9 @@ message codes
 210         sign in email invalid
 211         sign in password invalid
 212         sign in not verified
+220         collection name taken
+221         no collections found
+222         error adding to collection
 
 my functions                        description                     
 checkUsername()                     is username taken?                          
@@ -337,7 +347,78 @@ router.route('/users/:user_id')
             res.json({ message: 'Successfully deleted' });
         });
     });
+router.route('/collections')
 
+    .get(function(req, res) {
+        Collection.find({'open': true}, function(err, collections) {
+            if (err)
+                res.send(err);
+
+            res.json(collections);
+        });
+    })
+    .put(function(req, res) {
+        Collection.find(function(err, collections) {
+            if (err)
+                res.send(err);
+
+            res.json(collections);
+        });
+    })
+    .post(function(req, res) {
+        checkCollectionName(req,res);
+    });
+function checkCollectionName(req, res){//step 2
+    console.log('checking Collection Name');
+    Collection.find({ 'name': req.body.name }, function (err, docs) {
+        if(docs[0]!=null){
+            res.json({message: 220});
+            return;
+        }
+        var collection = new Collection();      // create a new instance of the User model
+        collection.name = req.body.name;
+        collection.descrip = req.body.descrip;
+        collection.open = req.body.open;
+        collection.pictures = [req.body.picture];
+        collection.creator = req.body.creator;
+        console.log(collection);
+        collection.save(function(err) {
+        if (err)
+            res.send(err);  
+        });
+        res.json({message: 200});
+    });
+    
+}
+router.route('/collections/:id')
+
+    .get(function(req, res) {
+        Collection.find({ 'creator': req.params.id }, function (err, docs) {
+            if(docs[0]==null){
+                res.json({message: 221});
+                return;
+            }
+            res.json({message: 200,
+                body: docs
+            });
+
+        });
+    })
+    .post(function(req, res) {
+        console.log(req);
+        Collection.findById(req.body.doc._id, function(err, coll) {
+            if(coll==null){
+                res.json({message: 222});
+                return;
+            }
+            coll.pictures = req.body.doc.pictures;
+            coll.save(function(err) {
+            if (err)
+                res.send(err);  
+            });
+            res.json({message: 200});
+        });//*/
+    });
 app.use('/api', router);
 
 
