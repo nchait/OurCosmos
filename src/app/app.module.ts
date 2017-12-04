@@ -25,6 +25,7 @@ import { SettingsComponent } from './settings/settings/settings.component';
 import { DocumentationService } from './settings/documentation.service';
 import { DmcaComponent } from './settings/dmca/dmca.component';
 import { DocManagementComponent } from './settings/doc-management/doc-management.component';
+import { SanitizeService } from './sanitize.service';
 
 
 const appRoutes:Routes=[
@@ -88,7 +89,7 @@ const appRoutes:Routes=[
   entryComponents: [
     SampleComponent
   ],
-  providers: [SampleService, AuthService, CookieService, SearchService, CollectService, DocumentationService],
+  providers: [SampleService, SanitizeService, AuthService, CookieService, SearchService, CollectService, DocumentationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
