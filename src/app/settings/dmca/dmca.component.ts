@@ -8,7 +8,7 @@ import { CollectService } from '../../collections/collect.service'
 export class DmcaComponent implements OnInit {
 collectionsO;
   constructor( private collectService: CollectService) { 
-    this.collectService.getDmca(this.onResponse.bind(this));
+    this.collectService.getDmca(this.onResponse.bind(this));//display all dmca complaints and allow user to restore or delete the collections
   }
 
   ngOnInit() {

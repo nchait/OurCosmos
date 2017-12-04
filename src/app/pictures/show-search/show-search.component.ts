@@ -16,14 +16,14 @@ import { concat } from 'rxjs/observable/concat';
   templateUrl: './show-search.component.html',
   styleUrls: ['./show-search.component.css']
 })
-export class ShowSearchComponent implements OnInit {
+export class ShowSearchComponent implements OnInit {//pretty much the same as view collection 
+                                                    //except search so i am only commenting that
   // Initialize response with empty string
   info;
   response = '';
   fill = '';
   show = 0;
   selected =0;
-  sampleTypeList= ['x', 'y', 'z'];
   pictures = new Array(100);
   currentpic = 1;
   theNew=0;
@@ -78,7 +78,7 @@ export class ShowSearchComponent implements OnInit {
     this.currentpic = index;
     this.show=1;
   }
-  onSearch(form: NgForm){
+  onSearch(form: NgForm){//send the search
     console.log(form.value.search);
     this._searchService.getData(this.onSearchReturn.bind(this),encodeURI(form.value.search));
     this.show=0;
@@ -89,7 +89,7 @@ export class ShowSearchComponent implements OnInit {
     this.pictures=res;
 
   }
-  onSearchReturn(res) {
+  onSearchReturn(res) {//set the search results
     console.log(res);
     this.pictures=res;
     console.log(this.pictures);

@@ -10,12 +10,12 @@ import { CollectService } from '../collections/collect.service';
 export class HomePageComponent implements OnInit {
   info;
   constructor(private collectService: CollectService, private authService:AuthService) { 
-    this.authService.checkCookie(this.onResponse.bind(this));
-    this.info = this.authService.getInfo();
+    this.authService.checkCookie(this.onResponse.bind(this));//check cookies
+    this.info = this.authService.getInfo();//set user
     console.log(this.info);
-    this.collectService.getPublics(this.show.bind(this));
+    this.collectService.getPublics(this.show.bind(this));//get the public collections
   }  
-  onResponse(theInfo){
+  onResponse(theInfo){//set user
     this.info=theInfo;
     if (theInfo==undefined){
       this.info = 0;
@@ -25,7 +25,7 @@ export class HomePageComponent implements OnInit {
   //this.onResponse.bind(this)
   collections;
 
-  show(res){
+  show(res){//show the collections and sort them and only show 10
     console.log(res[4].publicRating);
     console.log(res[3].publicRating);
     if (res[4].publicRating>res[5].publicRating){
@@ -58,10 +58,6 @@ export class HomePageComponent implements OnInit {
       this.collections=res;      
     }
     console.log(this.collections.length);
-  }
-  bubbleSort(){
-      //console.log(colle);
-
   }
   
   ngOnInit() {

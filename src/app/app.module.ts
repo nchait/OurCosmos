@@ -18,7 +18,6 @@ import { ShowSearchComponent } from './pictures/show-search/show-search.componen
 import { SearchService } from './pictures/search.service';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { CollectService } from './collections/collect.service';
-import { PublicComponent } from './collections/public/public.component';
 import { ViewCollectionComponent } from './collections/view-collection/view-collection.component';
 import { DocumentsComponent } from './settings/documents/documents.component';
 import { SettingsComponent } from './settings/settings/settings.component';
@@ -70,7 +69,6 @@ const appRoutes:Routes=[
     FooterComponent,
     HomePageComponent,
     ShowSearchComponent,
-    PublicComponent,
     ViewCollectionComponent,
     DocumentsComponent,
     SettingsComponent,

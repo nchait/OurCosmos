@@ -18,60 +18,57 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './view-collection.component.html',
   styleUrls: ['./view-collection.component.css']
 })
-export class ViewCollectionComponent implements OnInit {
+export class ViewCollectionComponent implements OnInit {//my cosmos screen
   // Initialize response with empty string
-  info;
-  response = '';
-  fill = '';
-  show = 0;
-  selected =0;
-  pictures = new Array(100);
-  currentpic = 1;
-  theNew=0;
-  collections;
-  collectionsO;
-  owner;
-  toEdit=-1;
-  numbers = [1,2,3,4,5,6,7,8,9,10];
-  rateValidity;
+  validity;//collection related output
+  index;//current collection being viewed
+  info;//username
+  response = '';//output for user
+  show = 0;//show the slider
+  pictures = new Array(100);//pictures showing
+  currentpic = 0;//index of current picture
+  theNew=0;//the new collection window variable
+  collections;//my collections
+  collectionsO;//public collections
+  owner;//owner of current collection, if so allows you to remove a picture
+  toEdit=-1;//edit window not open
+  numbers = [1,2,3,4,5,6,7,8,9,10];//for ratings
+  rateValidity;//output for the rating
   constructor(private collectService: CollectService, private dialogService:DialogService, private modalService: NgbModal, private authService:AuthService, private _sampleService: SampleService, private _searchService: SearchService) {
-    //this._sampleService.getData(this.onResponse.bind(this),'');
-    //this._searchService.getPrevData(this.onSearchReturn.bind(this));
-    this.authService.checkCookie(this.onAuth.bind(this));
-    this.collectService.getPublics(this.showPics.bind(this));
-    this.info = this.authService.getInfo();
+    this.authService.checkCookie(this.onAuth.bind(this));//are we signed in
+    this.collectService.getPublics(this.setPublics.bind(this));//get the public collections
+    this.info = this.authService.getInfo();//try to get the username quickly
     console.log(this.info);
-    this.currentpic =1;}
+    this.currentpic =0;
+  }
   ngOnInit(  ){}
-  edit(index){
+  edit(index){//open the edit collection window and set the collection your editting
     this.toEdit=index;
   }
   rate(collO, value){
-    //console.log(collO);
-    //console.log(value);
-    this.collectService.rateCollection(this.onRate.bind(this), this.collectionsO[collO]._id, this.info, value+1 );     
+    this.collectService.rateCollection(this.onRate.bind(this), this.collectionsO[collO]._id, this.info, value+1 );  //rate a collection   
   }
   onRate(res){
     console.log('result from rate: '+ res);
     if (res==200){
-      this.rateValidity = 'rating submitted';
+      this.rateValidity = 'rating submitted';//output response
     } else if (res==230){
       this.rateValidity = 'rating adjusted';
     }
-    this.refresh(res);
+    this.refresh(res);//refresh the ratings
   }
   onChange(form: NgForm){
-    this.collections[this.toEdit].descrip = form.value.myDescrip;
+    this.collections[this.toEdit].descrip = form.value.myDescrip;//submit edits of collection
     this.collections[this.toEdit].open = form.value.myPublic;
     this.collections[this.toEdit].name = form.value.myName;
     this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.toEdit]); 
     this.toEdit=-1;   
   }
-  deleteColl(index){
-    this.collectService.deleteCollection(this.refresh.bind(this), this.collections[index]._id);     
+  deleteColl(index){//delete a collection
+    this.collectService.deleteCollection(this.refresh.bind(this), this.collections[index]._id); 
   }
   deleteFromColl(){
-    var newArray = [];
+    var newArray = [];//remove a picture from the collection
     this.pictures.forEach(element => {
       if (this.pictures[this.currentpic]==element){
 
@@ -82,40 +79,35 @@ export class ViewCollectionComponent implements OnInit {
     console.log(this.pictures);
     console.log(newArray);
     if (newArray.length == 0){
-      this.validity = "you cant delete your last picture!";
+      this.validity = "you cant delete your last picture!";//no empty collections
       return;
     }
     this.pictures=newArray;
     this.collections[this.index].pictures=newArray;
-    this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.index])
+    this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.index]);
   }
-  editAdmin(form: NgForm){
-
+  refresh(res){//refresh resets the collections
+    this.collectService.getPublics(this.setPublics.bind(this)); 
+    this.collectService.getCollections(this.setCollections.bind(this),this.info);     
   }
-  refresh(res){
-    this.collectService.getPublics(this.showPics.bind(this)); 
-    this.collectService.getCollections(this.setCollections.bind(this),this.info)     
-  }
-  index;
-  report(index) {
+  report(index) {//report a collection
     this.collectService.sendDMCA(this.refresh.bind(this), this.collectionsO[index]._id);    
   }  
-  view(index, owner) {
+  view(index, owner) {//view a collection
     console.log()
     this.currentpic =0;    
     this.show=1;
     this.owner=owner;
-    if (owner){
+    if (owner){// my own
       this.index=index;
       console.log(this.collections);
       this.pictures=this.collections[index].pictures;
-      
-    } else {
+    } else {//public
       console.log(this.collectionsO);      
       this.pictures=this.collectionsO[index].pictures;
     }
   }
-  onAuth(theInfo){
+  onAuth(theInfo){//set username and if signed in get my own collections
     this.info=theInfo;
     if (theInfo==undefined){
       this.info = 0;
@@ -125,7 +117,7 @@ export class ViewCollectionComponent implements OnInit {
       this.collectService.getCollections(this.setCollections.bind(this),this.info) 
     }
   }
-  showPics(res){
+  setPublics(res){//sort and display the public collections
     var swapped;
     do {
         swapped = false;
@@ -147,26 +139,23 @@ export class ViewCollectionComponent implements OnInit {
         }
     } while (swapped);
     this.collectionsO=res;      
-
     console.log(this.collectionsO.length);
-    
   }
-  setCollections(res){
+  setCollections(res){//set my collections
     console.log(res);
     this.collections=res.body;
     console.log ('setcollections called, '+ this.collections);
     console.log(this.info);
   }
-  myCollection;
-  addto(index){
+  addto(index){//add a picure to a collection
     //console.log(index);
     this.collections[index].pictures.push(this.pictures[this.currentpic]);
     console.log(this.collections[index]);
     this.collectService.addCollections(this.confirmAdd.bind(this),this.collections[index]);     
   }
-  confirmAdd(res){
+  confirmAdd(res){//callback from add to collection
     if (res==222){
-      this.validity = 'error serverside!';
+      this.validity = 'error server side!';
     } else if (res==200){
       this.validity = 'Success';
     }else {
@@ -176,31 +165,13 @@ export class ViewCollectionComponent implements OnInit {
   onSelect(index){
     this.show=0;
     console.log(index);
-    this.currentpic = index;
+    this.currentpic = index;//select a pic from the slider
     this.show=1;
   }
-  onSearch(form: NgForm){
-    console.log(form.value.search);
-    this._searchService.getData(this.onSearchReturn.bind(this),encodeURI(form.value.search));
-    this.show=0;
-    this.currentpic=0;
-  }
-  onResponse(res) {
-    //console.log(res);
-    this.pictures=res;
-
-  }
-  onSearchReturn(res) {
-    console.log(res);
-    this.pictures=res;
-    console.log(this.pictures);
-    this.show=1;
-    this.currentpic=0;
-  }
-  revealNew(x){
+  revealNew(x){//show the collection creation window
     this.theNew=x;
   }
-  onCreate(form: NgForm){
+  onCreate(form: NgForm){  //submit new collection
     this.collectService.newCollection(this.afterCreate.bind(this), 
                                       form.value.public, 
                                       form.value.name, 
@@ -209,20 +180,19 @@ export class ViewCollectionComponent implements OnInit {
                                       this.info);   
    
   }
-  validity;
   afterCreate(res){
     if (res==220){
       this.validity = 'choose a new name';
     } else if (res==200){
-      this.validity = 'Success';
+      this.validity = 'Success';//on response from create collections
       this.collectService.getCollections(this.setCollections.bind(this),this.info);
-      this.collectService.getPublics(this.showPics.bind(this));      
+      this.collectService.getPublics(this.setPublics.bind(this));      
       this.theNew=0;      
     }else {
       this.validity = 'Inexplicable Error';
     }
   }
-  next(){
+  next(){//next image
     this.show=0;
     this.currentpic++;
     if (this.pictures[this.currentpic]==undefined){
@@ -230,7 +200,7 @@ export class ViewCollectionComponent implements OnInit {
     }
     this.show=1;    
   }
-  prev(){
+  prev(){//previous image
     this.show=0;
     this.currentpic--;
     console.log(this.currentpic);
@@ -246,9 +216,6 @@ export class ViewCollectionComponent implements OnInit {
       }
       console.log(this.currentpic);    
     }
-    this.show=1;
-    
+    this.show=1; 
   }
-
-
 }

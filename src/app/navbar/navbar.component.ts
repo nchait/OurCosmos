@@ -14,8 +14,8 @@ export class NavbarComponent implements OnInit {
   info;
   constructor(private _searchService: SearchService, private authService:AuthService, private router: Router) { 
     this.authService.checkCookie(this.onResponse.bind(this));
-    this.info = this.authService.getInfo();
-  }  
+    this.info = this.authService.getInfo(); //get user for navbar options
+  }  //all done using html and routerLink
   onResponse(theInfo){
     if (theInfo==undefined){
       theInfo=0;
@@ -26,23 +26,7 @@ export class NavbarComponent implements OnInit {
   //this.onResponse.bind(this)
   ngOnInit() {
   }
-  logOut(){
-    console.log('logout');
-    this.authService.logOut();
-    this.goSignIn();
-    console.log('what');
-  }
-  goSignIn(){
-    this.router.navigate['/signin'];    
-  }
-  signIn(){
-    console.log('signing in');
-    this.router.navigate['/signin'];
-  }
-  onSearch(form: NgForm){
-    console.log(    form.value.theSearch    );
-    this._searchService.getPrevData(form.value.theSearch);
-  }
+
 
 }
 /*

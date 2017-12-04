@@ -5,7 +5,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 export class DocumentationService {
   headers = null;  
   constructor(private http: HttpClient) { }
-  changeDoc(callback_fun, words, id){
+  changeDoc(callback_fun, words, id){//update doc
     let body = ({       
       'words': words,
       'id': id
@@ -17,7 +17,7 @@ export class DocumentationService {
       callback_fun(data.message);
     });
   }
-  getDoc(callback_fun){
+  getDoc(callback_fun){//show the doc
     this.http.get('/api/document').subscribe(data => {
       callback_fun(data);
     });

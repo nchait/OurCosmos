@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 export class DocManagementComponent implements OnInit {
   privacy;
   security;
-  constructor(private docService:DocumentationService) {   }
+  constructor(private docService:DocumentationService) {   }//three forms, one for each document to tell the service to 
   validity
   onResponse(data){
     if(data = 200){

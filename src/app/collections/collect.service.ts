@@ -6,7 +6,7 @@ export class CollectService {
   headers;
   constructor(private http: HttpClient) { }
   newCollection(callback_fun, pub: boolean, name: String, descrip: String, image: String, creator: String){
-    
+    //create a new collection
     let body = ({       
       'open': pub,
       'name': name,
@@ -26,7 +26,7 @@ export class CollectService {
     let body = ({       
       'collId': collId,
       'userId': myId,
-      'rate':val
+      'rate':val//send a rating
     });
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
@@ -35,31 +35,30 @@ export class CollectService {
       callback_fun(data.message);
     });
   }
-  deleteCollection(callback_fun, id){
+  deleteCollection(callback_fun, id){//delete a collection
     this.http.delete('/api/collections/'+id).subscribe(data => {
       callback_fun(data);
     });
   }
   sendDMCA(callback_fun, id){
     this.http.get('/api/dmca/'+id).subscribe(data => {
-      callback_fun(data);
+      callback_fun(data);//report an image
     });
   }
   fixDMCA(callback_fun, id){
     this.http.delete('/api/dmca/'+id).subscribe(data => {
-      callback_fun(data);
+      callback_fun(data);//restore an image
     });
   }
   getDmca(callback_fun){
     this.http.get('/api/dmca').subscribe(data => {
-      callback_fun(data);
+      callback_fun(data);//get all reported collections
     });
   }
   updateCollection(callback_fun, item){
-    
     let body = ({       
       'doc': item
-    });
+    });//update collections values
     //console.log(body);
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     //console.log(body);    
@@ -69,21 +68,20 @@ export class CollectService {
     });
   } 
   
-  getPublics(callback_fun){
+  getPublics(callback_fun){//get public collections
     this.http.get('/api/collections').subscribe(data => {
       callback_fun(data);
     });
   }
-  getCollections(callback_fun, info: String){
+  getCollections(callback_fun, info: String){//get my collections
     this.http.get('/api/collections/'+info).subscribe(data => {
       console.log('the collection data: '+data);
       callback_fun(data);
     });
   }
   addCollections(callback_fun, item){
-    
     let body = ({       
-      'doc': item
+      'doc': item//add or delete from a collection
     });
     console.log(body);
     this.headers = new Headers({ 'Content-Type': 'application/json' });

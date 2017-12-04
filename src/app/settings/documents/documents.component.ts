@@ -10,7 +10,7 @@ export class DocumentsComponent implements OnInit {
 privacy;
 security;
 dmca;
-  constructor(private docService:DocumentationService) { 
+  constructor(private docService:DocumentationService) { //simply get and show docs
     this.docService.getDoc(this.onResponse.bind(this));     
   }
 
