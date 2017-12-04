@@ -98,7 +98,7 @@ export class ViewCollectionComponent implements OnInit {
   }
   index;
   report(index) {
-    //this.collectService.sendDMCA(this.refresh.bind(this), this.collectionsO[index]._id);    
+    this.collectService.sendDMCA(this.refresh.bind(this), this.collectionsO[index]._id);    
   }  
   view(index, owner) {
     console.log()

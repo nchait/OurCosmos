@@ -9,6 +9,7 @@ import { DocumentationService} from '../documentation.service';
 export class DocumentsComponent implements OnInit {
 privacy;
 security;
+dmca;
   constructor(private docService:DocumentationService) { 
     this.docService.getDoc(this.onResponse.bind(this));     
   }
@@ -17,7 +18,8 @@ security;
   }
   onResponse(data){
     console.log(data[0].info);
-    this.privacy = data[0].info;
-    this.security = data[1].info;
+    this.privacy = data[1].info;
+    this.security = data[2].info;
+    this.dmca = data[0].info;
   }
 }

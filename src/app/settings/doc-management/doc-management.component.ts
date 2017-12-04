@@ -10,17 +10,25 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 export class DocManagementComponent implements OnInit {
   privacy;
   security;
-  constructor(private docService:DocumentationService) { 
-    this.docService.getDoc(this.onResponse.bind(this));         
-  }
+  constructor(private docService:DocumentationService) {   }
+  validity
   onResponse(data){
-    console.log(data[0].info);
-    this.privacy = data[0].info;
-    this.security = data[1].info;
+    if(data = 200){
+      this.validity='success, reload to see!'
+    }
   }
   ngOnInit() {
   }
   onPrivacy(form:NgForm){
-    console.log(form.value.name);
+    console.log(form.value.val);
+    this.docService.changeDoc(this.onResponse.bind(this), form.value.val, '5a24750ac2f567cf10d03334');             
+  }
+  onSecurity(form:NgForm){
+    console.log(form.value.val);
+    this.docService.changeDoc(this.onResponse.bind(this), form.value.val, '5a2477ddc2f567cf10d03335');             
+  }
+  onDmca(form:NgForm){
+    console.log(form.value.val);
+    this.docService.changeDoc(this.onResponse.bind(this), form.value.val, '5a2490bc991275cfce7cbef2');             
   }
 }

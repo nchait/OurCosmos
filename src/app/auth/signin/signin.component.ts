@@ -25,8 +25,13 @@ export class SigninComponent implements OnInit {
   }
   onSignin(form: NgForm){
     const email = form.value.email;
+    const password = form.value.password;  
     console.log(email);
-    var x = email.split('@');
+    if (email.length<3 ||password.length<3){
+      this.outcome = 'all lengths must be larger than 3';
+      return
+    }
+    var x = email.split('@');    
     if (x.length!=2){
       this.outcome = 'invalid email';
       return
@@ -36,13 +41,12 @@ export class SigninComponent implements OnInit {
       this.outcome = 'invalid email';
       return
     } 
-    const password = form.value.password;
     this.authService.attemptSignin(this.onResponse.bind(this), email, password);    
   }
   onResponse(res){
       if(res==200){
         this.outcome='Success';
-        this.router.navigate(['/']);
+        this.router.navigate(['/mycosmos']);
       } else if (res == 210) {
         this.outcome='you are not verified';        
       } else if (res == 211) {

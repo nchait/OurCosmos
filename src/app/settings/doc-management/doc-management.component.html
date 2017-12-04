@@ -1,7 +1,22 @@
+<h1>{{validity}}</h1>
 <form (ngSubmit)="onPrivacy(n)" #n="ngForm" id="priv">
     <div class="form-group">
-        <label for="name">Privacy <br> It is recomended to write in word and copy and paste</label><br>
-        <input name="search" id="search" class="form-control mr-sm-2" type="text" ngModel placeholder="Search">        
+        <label for="val">Privacy <br> It is recomended to write in word and copy and paste</label><br>
+        <input name="val" id="val" class="form-control mr-sm-2" type="text" ngModel placeholder="Privacy">        
     </div>
   <button class="btn btn-primary" type="submit">Submit New Privacy Form</button>    
+</form>
+<form (ngSubmit)="onSecurity(f)" #f="ngForm" id="priv">
+    <div class="form-group">
+        <label for="val">Security <br> It is recomended to write in word and copy and paste</label><br>
+        <input name="val" id="val" class="form-control mr-sm-2" type="text" ngModel placeholder="Security">        
+    </div>
+  <button class="btn btn-primary" type="submit">Submit New Security Form</button>    
+</form>
+<form (ngSubmit)="onDmca(g)" #g="ngForm" id="priv">
+    <div class="form-group">
+        <label for="val">DMCA <br> It is recomended to write in word and copy and paste</label><br>
+        <input name="val" id="val" class="form-control mr-sm-2" type="text" ngModel placeholder="DMCA">        
+    </div>
+  <button class="btn btn-primary" type="submit">Submit New DMCA Form</button>    
 </form>

@@ -40,6 +40,21 @@ export class CollectService {
       callback_fun(data);
     });
   }
+  sendDMCA(callback_fun, id){
+    this.http.get('/api/dmca/'+id).subscribe(data => {
+      callback_fun(data);
+    });
+  }
+  fixDMCA(callback_fun, id){
+    this.http.delete('/api/dmca/'+id).subscribe(data => {
+      callback_fun(data);
+    });
+  }
+  getDmca(callback_fun){
+    this.http.get('/api/dmca').subscribe(data => {
+      callback_fun(data);
+    });
+  }
   updateCollection(callback_fun, item){
     
     let body = ({       

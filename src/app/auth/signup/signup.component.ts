@@ -41,6 +41,10 @@ export class SignupComponent implements OnInit {
     }
     const username = form.value.title;
     const password = form.value.password;
+    if (email.length<3 || password.length<3 || username.length<3){
+      this.outcome = 'all lengths must be larger than 3';
+      return
+    }
     this.authService.attemptSignup(this.onResponse.bind(this), email, username, password);    
   }
   onResponse(res){

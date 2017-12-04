@@ -5,10 +5,10 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 export class DocumentationService {
   headers = null;  
   constructor(private http: HttpClient) { }
-  changeDoc(callback_fun, words, name){
+  changeDoc(callback_fun, words, id){
     let body = ({       
       'words': words,
-      'name': name
+      'id': id
     });
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
