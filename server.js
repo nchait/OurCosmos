@@ -6,7 +6,9 @@ mongoose.connect('mongodb://localhost:27017/bears', { useMongoClient : true });
 var Bear        = require('./app/models/bear');
 var User        = require('./app/models/user');
 var Collection  = require('./app/models/collection');
-var Rating      = require('./app/models/rating')
+var Rating      = require('./app/models/rating');
+var Document      = require('./app/models/document');
+var Dmca        = require('./app/models/dmca');
 var request     = require('request');
 var nodemailer  = require('nodemailer');
 var bcrypt      = require ('bcrypt');
@@ -33,6 +35,11 @@ post('/collections') add a collection
 get('/collections') get public collections
 put('/collections') edit my collections attributs or delete a picture from them
 post('/collections/rating') post a new rating or replace an old one
+get('/document') get the docs weve saved
+post('/document') change a doc
+get('/dmca') get the disabled collections
+get('/dmca/:id') report a dmca invalid collection
+delete('/dmca/:id') reset the request
 
 
 
@@ -355,7 +362,7 @@ router.route('/users/:user_id')
 router.route('/collections')
 
     .get(function(req, res) {
-        Collection.find({'open': true}, function(err, collections) {
+        Collection.find({'open': true, 'disabled':false}, function(err, collections) {
             if (err)
                 res.send(err);
 
@@ -383,7 +390,7 @@ router.route('/collections')
     });
 function checkCollectionName(req, res){//step 2
     console.log('checking Collection Name');
-    Collection.find({ 'name': req.body.name }, function (err, docs) {
+    Collection.find({ 'name': req.body.name, 'disabled':false}, function (err, docs) {
         if(docs[0]!=null){
             res.json({message: 220});
             return;
@@ -395,6 +402,7 @@ function checkCollectionName(req, res){//step 2
         collection.pictures = [req.body.picture];
         collection.publicRating = 0;
         collection.creator = req.body.creator;
+        collection.disabled = false;
         console.log(collection);
         collection.save(function(err) {
         if (err)
@@ -417,7 +425,7 @@ router.route('/collections/:id')
         });
     })
     .get(function(req, res) {
-        Collection.find({ 'creator': req.params.id }, function (err, docs) {
+        Collection.find({ 'creator': req.params.id, 'disabled':false}, function (err, docs) {
             if(docs[0]==null){
                 res.json({message: 221});
                 return;
@@ -432,7 +440,6 @@ router.route('/collections/:id')
         Collection.find(function(err, collections) {
             if (err)
                 res.send(err);
-
             res.json(collections);
         });
     })
@@ -451,79 +458,198 @@ router.route('/collections/:id')
             res.json({message: 200});
         });//*/
     });
-    router.route('/rating/')
-        .put(function(req, res) {
-        Rating.find(function(err, ratings) {
-            if (err)
-                res.send(err);
+router.route('/rating/')
+    .put(function(req, res) {
+    Rating.find(function(err, ratings) {
+        if (err)
+            res.send(err);
 
-            res.json(ratings);
-            });
-        })
-        .post(function(req, res) {
-            //console.log(req.body);//collId, myId, val
-            Rating.find({ 
-                                'collectionId': req.body.collId,
-                                'userId': req.body.userId
-                                    }, function (err, docs) {
-                console.log(docs);
-                if(docs[0]==undefined){
-                    var rating = new Rating();      // create a new instance of the User model
-                    rating.collectionId = req.body.collId;
-                    rating.userId = req.body.userId;
-                    rating.rate = req.body.rate;
-                    console.log(rating);
-                    rating.save(function(err) {
-                    if (err)
-                        res.send(err);  
-                        updateRating(req.body.collId);
-
-                    });
-                    res.json({message: 200});
-                    return;
-                }//*/
-                console.log(docs[0]);
-                docs[0].rate = req.body.rate;
-                docs[0].save(function(err) {
+        res.json(ratings);
+        });
+    })
+    .post(function(req, res) {
+        //console.log(req.body);//collId, myId, val
+        Rating.find({ 
+                            'collectionId': req.body.collId,
+                            'userId': req.body.userId
+                                }, function (err, docs) {
+            console.log(docs);
+            if(docs[0]==undefined){
+                var rating = new Rating();      // create a new instance of the User model
+                rating.collectionId = req.body.collId;
+                rating.userId = req.body.userId;
+                rating.rate = req.body.rate;
+                console.log(rating);
+                rating.save(function(err) {
                 if (err)
-                    res.send(err); 
+                    res.send(err);  
                     updateRating(req.body.collId);
-                });
-                res.json({message: 230});//*/
-    
-                });
-        })
-        .delete(function(req, res) {
-        console.log(req);
-        Rating.remove({
-            _id: req.body.id
-        }, function(err, collection) {
-            if (err)
-                res.send(err);
 
-            res.json({ message: 200 });
+                });
+                res.json({message: 200});
+                return;
+            }//*/
+            console.log(docs[0]);
+            docs[0].rate = req.body.rate;
+            docs[0].save(function(err) {
+            if (err)
+                res.send(err); 
+                updateRating(req.body.collId);
+            });
+            res.json({message: 230});//*/
+
+            });
+    })
+    .delete(function(req, res) {
+    console.log(req);
+    Rating.remove({
+        _id: req.body.id
+    }, function(err, collection) {
+        if (err)
+            res.send(err);
+
+        res.json({ message: 200 });
         });
     });
-    function updateRating(collId){
-        console.log('check');
-        Rating.find({ 
-                        'collectionId': collId,
-                        }, function (err, docs) {
-            var sum=0;
-            for (var i = 0; i < docs.length; i++){
-                sum+=docs[i].rate;
-            }
-            
-            Collection.findById(collId,function (err, coll) {
-                console.log(sum);
-                console.log(docs.length);
-                coll.publicRating=String(sum/docs.length);
-                console.log(coll.publicRating);
-                coll.save(function(err) {
-                });
+function updateRating(collId){
+    console.log('check');
+    Rating.find({ 
+                    'collectionId': collId,
+                    }, function (err, docs) {
+        var sum=0;
+        for (var i = 0; i < docs.length; i++){
+            sum+=docs[i].rate;
+        }
+        
+        Collection.findById(collId,function (err, coll) {
+            console.log(sum);
+            console.log(docs.length);
+            coll.publicRating=String(sum/docs.length);
+            console.log(coll.publicRating);
+            coll.save(function(err) {
             });
         });
+    });
+
+}
+router.route('/document')
+    .post(function(req, res) {
+        Document.findById(req.body.id, function(err, doc) {
+        if (err)
+            res.send(err);
+        doc.info = req.body.words;
+        
+            doc.save(function(err) {
+                if (err)
+                    res.send(err); 
+                res.json({message:200});
+            });
+        });
+    })
+
+    .get(function(req, res) {
+        Document.find(function(err, users) {
+            if (err)
+                res.send(err);
+
+            res.json(users);
+        });
+    });
+
+//*
+router.route('/dmca')
+    .get(function(req, res) {
+        Collection.find({'disabled': 'dmca'}, function(err, collectionsA) {
+            if (err)
+                res.send(err);
+            /*
+            Collection.find({'disabled': ''}, function(err, collectionsB) {
+                if (err)
+                    res.send(err);
+                Collection.find({'disabled':false}, function(err, collectionsC) {
+                    if (err)
+                        res.send(err);
+                    var collections = [collectionsA, collectionsB, collectionsC]
+                    res.json(collections);
+                });    
+            });
+            //*/
+            return res.json({ message : 200, body: collectionsA})
+        });
+    })
+
+router.route('/dmca/:id')
+    .get(function(req, res) {
+        console.log(req.params.id);
+        Collection.findById(req.params.id, function(err, collection) {
+            if (err)
+                return res.send(err);
+            sendEmailFromCollection(collection.name,false);
+            collection.disabled = 'dmca';
+            collection.save(function(err2) {
+                if (err2)
+                    return res.send(err2); 
+                return res.json({message:200});
+            });
+        });
+    })
+    .delete(function(req, res) {
+        console.log(req.params.id);
+        Collection.findById(req.params.id, function(err, collection) {
+            if (err)
+                return res.send(err);
+            collection.disabled = false;
+            collection.save(function(err2) {
+                if (err2)
+                    return res.send(err2); 
+                return res.json({message:200});
+            });
+        });
+    });
+function sendEmailFromCollection(name,deleted){
+    Collection.find({'name': name}, function(err, collections) {
+        if (err)
+            res.send(err);
+        User.find({'username': collections[0].creator}, function(err, user) {
+            if (err)
+                res.send(err);
+            console.log(user);
+            sendDMCA(user.email, deleted);
+        });
+    });
+}
+function sendDMCA(email, deleted){
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'OurCosmosSE3316@gmail.com',
+        pass: 'Angular2'
+      }
+    });
+    var sub;
+    var body;
+    if (deleted){
+        body = "your collection was deleted. either by you or the administrator for infringement or offensive material.";
+        sub = 'Collection Deleted - Our Cosmos';
+    }else{
+        body = "a collection of yours has been reported. respond to this email within 14 days to dispute the claim.";
+        sub = 'Collection Reported - Our Cosmos';
     }
+    var mailOptions = {
+      from: 'OurCosmosSE3316@gmail.com',
+      to: email,
+      subject: sub,
+      text: body
+    };
+    //console.log(email);
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+}
 app.use('/api', router);
 
 

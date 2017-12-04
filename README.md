@@ -1,4 +1,13 @@
 # Angular to Node HTTP GET
+2. Install MongoDB
+You will be using MongoDB, which is a simple key-value database. To install, type sudo apt-get install -y mongodb-org on the terminal window. This will download MongoDB v2.6 and install it on your workspace. 
+Create the server start script using following three commands (please note the use of spaces, single and double quotation marks and type them exactly as shown):
+1.	mkdir data 
+2.	echo 'mongod --bind_ip=$IP --dbpath=data --nojournal --rest "$@"' > rundb 
+3.	chmod a+x rundb 
+./rundb
+
+# Angular to Node HTTP GET
 
 A sample project to demostrate HTTP request from Angular to web service running on Node server
 

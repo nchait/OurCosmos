@@ -9,7 +9,10 @@ var CollectionSchema   = new Schema({
     creator:String,
     publicRating: String,
     open: Boolean,
-    descrip: String
+    descrip: String,
+    disabled: Boolean
 });
 
 module.exports = mongoose.model('Collection', CollectionSchema);
+
+//438
