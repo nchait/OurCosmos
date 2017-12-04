@@ -15,6 +15,7 @@
     "express-jwt-token": "^0.1.5",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.4",
-    "nodemailer": "^4.4.0"
+    "nodemailer": "^4.4.0",
+    "sanitize-html": "^1.16.1"
   }
 }
