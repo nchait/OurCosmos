@@ -25,14 +25,15 @@ export class AuthService {
     var cookieA = this._cookieService.get(this.myKeyA); //look for the saved cookies
     var cookieB = this._cookieService.get(this.myKeyB); 
     this.http.get('/api/users/cookie/'+cookieB+'&'+cookieA).subscribe(data => {//check if session still valid
+      let x:any=data;
       if (this.username==undefined){//if not remove all cookies and tell user
         console.log('called');
         this.logOut();
         return callback_fun(this.username);
         
       }
-      this.username = data.username;//if so set username
-      console.log('cookie response ' + data.message);
+      this.username = x.username;//if so set username
+      console.log('cookie response ' + x.message);
       callback_fun(this.username);//give the user the username
     });
   }
@@ -45,23 +46,25 @@ export class AuthService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log('sign up body '+ body);    
     this.http.post('/api/users/', body, {headers: this.headers}).subscribe(data => {
-      console.log('sign up response ' + data.message);
-      callback_fun(data.message);
+      let x:any=data;
+      console.log('sign up response ' + x.message);
+      callback_fun(x.message);
     });
   }
-  attemptSignin(callback_fun, eamil: String, password: String) {
+  attemptSignin(callback_fun, email: any, password: String) {
     let body = ({       
-      'email': email.value,
+      'email': email,
       'password':password
     });
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
     this.http.post('/api/users/signin', body, {headers: this.headers}).subscribe(data => {
       console.log(data);
-      this._cookieService.put(this.myKeyA,data.cookie);//set the cookies regardless because if not correct it will mean nothing
-      this._cookieService.put(this.myKeyB,data.id);
-      this.username = data.username;//set username internally
-      callback_fun(data.message);
+      let x:any=data;
+      this._cookieService.put(this.myKeyA,x.cookie);//set the cookies regardless because if not correct it will mean nothing
+      this._cookieService.put(this.myKeyB,x.id);
+      this.username = x.username;//set username internally
+      callback_fun(x.message);
     });
   }
 }

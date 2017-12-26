@@ -11,9 +11,10 @@ export class SampleService {
   */
   getData(callback_fun, params: String) {
     this.http.get('/api/nasa/search/'+params).subscribe(data => {
+        let x:any=data;
         let pictures= new Array(100);
         let j: any;
-        let res = data.body.collection.items;
+        let res = x.body.collection.items;
         //console.log(res);
         //console.log(res[0].links[0].href);
 

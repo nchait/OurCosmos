@@ -19,7 +19,8 @@ export class CollectService {
     //console.log(body);    
     this.http.post('/api/collections/', body, {headers: this.headers}).subscribe(data => {
       //console.log(data);
-      callback_fun(data.message);
+      let x:any=data;
+      callback_fun(x.message);
     });
   } 
   rateCollection (callback_fun, collId, myId, val){
@@ -31,8 +32,9 @@ export class CollectService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
     this.http.post('/api/rating/', body, {headers: this.headers}).subscribe(data => {
+      let x:any=data;
       console.log(data);
-      callback_fun(data.message);
+      callback_fun(x.message);
     });
   }
   deleteCollection(callback_fun, id){//delete a collection
@@ -64,7 +66,8 @@ export class CollectService {
     //console.log(body);    
     this.http.put('/api/collections/', body, {headers: this.headers}).subscribe(data => {
       //console.log(data);
-      callback_fun(data.message);
+      let x:any=data;
+      callback_fun(x.message);
     });
   } 
   
@@ -87,8 +90,9 @@ export class CollectService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
     this.http.post('/api/collections/'+item._id, body, {headers: this.headers}).subscribe(data => {
+      let x:any=data;
       console.log(data);
-      callback_fun(data.message);
+      callback_fun(x.message);
     });
   } 
 }

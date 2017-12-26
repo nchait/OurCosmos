@@ -113,6 +113,8 @@
             </table>
           </div>    
     </ng-container>
+    <br>
+    <h1>{{duplicate}}</h1>
     <ng-container *ngIf="toEdit != -1">
         <br>
         <div class="row">
@@ -120,15 +122,18 @@
                 <form (ngSubmit)="onChange(m)" #m="ngForm">
                     <div class="form-group">
                         <label for="myName">Name</label>
+                        <br>current value: {{preset[0]}}
                         <input type="text" id="myName" name="myName" ngModel class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="myDescrip">Description</label>
+                        <br>current value: {{preset[1]}}
                         <input type="text" id="myDescrip" name="myDescrip" ngModel class="form-control">
                     </div>
                     <div class="form-group">
-                            <label for="myPublic">Public</label>
-                            <input type="checkbox" id="myPublic" name="myPublic" ngModel class="form-control">
+                        <label for="myPublic">Public</label>
+                        <br>current value: {{preset[2]}}
+                        <input type="checkbox" id="myPublic" name="myPublic" ngModel class="form-control">
                     </div>
                     <button class="btn btn-primary" type="submit">Submit Changes</button>
                     <br><br>

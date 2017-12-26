@@ -26,11 +26,12 @@ export class HomePageComponent implements OnInit {
   collections;
 
   show(res){//show the collections and sort them and only show 10
-    console.log(res[4].publicRating);
-    console.log(res[3].publicRating);
-    if (res[4].publicRating>res[5].publicRating){
-      console.log('good');
-    }
+    console.log('show me!');
+    // console.log(res[4].publicRating);
+    // console.log(res[3].publicRating);
+    // if (res[4].publicRating>res[5].publicRating){
+    //   //console.log('good');
+    // }
     var swapped;
     do {
         swapped = false;

@@ -11,9 +11,10 @@ export class SearchService {
   getData(callback_fun, params: string) {
     this.query = params;
     this.http.get('/api/nasa/search/'+params).subscribe(data => {//search with query
+      let x:any = data;
       let pictures= new Array(100);
       let j: any;
-      let res = data.body.collection.items;
+      let res = x.body.collection.items;
       //console.log(res);
       //console.log(res[0].links[0].href);
 
@@ -28,9 +29,10 @@ export class SearchService {
   getPrevData(callback_fun) {
     var params = this.query;
     this.http.get('/api/nasa/search/'+params).subscribe(data => {//search without query
+      let x:any = data;
       let pictures= new Array(100);
       let j: any;
-      let res = data.body.collection.items;
+      let res = x.body.collection.items;
       //console.log(res);
       //console.log(res[0].links[0].href);
 

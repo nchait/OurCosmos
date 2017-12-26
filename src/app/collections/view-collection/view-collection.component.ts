@@ -20,6 +20,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class ViewCollectionComponent implements OnInit {//my cosmos screen
   // Initialize response with empty string
+  preset= ['','',''];
+  duplicate;// collection changing output
   validity;//collection related output
   index;//current collection being viewed
   info;//username
@@ -44,6 +46,9 @@ export class ViewCollectionComponent implements OnInit {//my cosmos screen
   ngOnInit(  ){}
   edit(index){//open the edit collection window and set the collection your editting
     this.toEdit=index;
+    this.preset[0]=this.collections[index].name;
+    this.preset[1]=this.collections[index].descrip;
+    this.preset[2]=this.collections[index].open;
   }
   rate(collO, value){
     this.collectService.rateCollection(this.onRate.bind(this), this.collectionsO[collO]._id, this.info, value+1 );  //rate a collection   
@@ -61,8 +66,17 @@ export class ViewCollectionComponent implements OnInit {//my cosmos screen
     this.collections[this.toEdit].descrip = form.value.myDescrip;//submit edits of collection
     this.collections[this.toEdit].open = form.value.myPublic;
     this.collections[this.toEdit].name = form.value.myName;
-    this.collectService.updateCollection(this.refresh.bind(this), this.collections[this.toEdit]); 
-    this.toEdit=-1;   
+    this.collectService.updateCollection(this.onUpdate.bind(this), this.collections[this.toEdit]); 
+  }
+  onUpdate(res){
+    if (res==223){
+      this.duplicate = 'Name already in use, choose another name';
+      //name in use
+    }if (res==200){
+      this.duplicate = '';
+      this.toEdit=-1;   
+    }
+    this.refresh(res);
   }
   deleteColl(index){//delete a collection
     this.collectService.deleteCollection(this.refresh.bind(this), this.collections[index]._id); 

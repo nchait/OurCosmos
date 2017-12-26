@@ -13,8 +13,9 @@ export class DocumentationService {
     this.headers = new Headers({ 'Content-Type': 'application/json' });
     console.log(body);    
     this.http.post('/api/document', body, {headers: this.headers}).subscribe(data => {
+      let x:any = data;
       console.log(data);
-      callback_fun(data.message);
+      callback_fun(x.message);
     });
   }
   getDoc(callback_fun){//show the doc
