@@ -14,8 +14,9 @@ var nodemailer  = require('nodemailer');
 var bcrypt      = require ('bcrypt');
 var auth        = require('express-jwt-token');
 var jwt         = require('jsonwebtoken');
-var sanitizeHtml = require('sanitize-html');
-
+var sanitizeHtml= require('sanitize-html');
+var cors        = require('cors')
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -55,6 +56,7 @@ message codes
 220         collection name taken
 221         no collections found
 222         error adding to collection
+223         Collection name taken for update
 230         rating replaced
 
 my functions                        description                     
@@ -153,6 +155,7 @@ function sendVerification(email, verification){//verification email sending func
         pass: 'Angular2'//DO NOT CHANGE
       }
     });
+    console.log(verification);
     var link = "https://lab05-nchait.c9users.io:8081/api/users/verify/"+verification;//set the verification link
     var body= "Welcome to The Cosmos, the best place to view NASAs collection of astounding pictures. use the following link to verify yourself "+ link+".";//set email body
     var mailOptions = {
@@ -194,7 +197,9 @@ function isAdmin(username){
 router.route('/users/signin')
 
     .post(function(req, res) {//attempt sign in. stacked to show sequence of events
+        console.log(req.body.email);
         User.find({ 'email': req.body.email }, function (err, docs) {
+            console.log(docs)
             if(docs.length==1 && docs[0].verification==1){//see the else statement for an explanaition but this assumes the email was valid and is verified
                 const saltRounds = 10;
                 bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -222,14 +227,16 @@ router.route('/users/signin')
                         });
                     });
                 });
-            }else{
-                if(docs[0].verification==1){
-                    res.json({message: 212});//email invalid
+            }else if(docs.length==0){
+                res.json({message: 210});//email invalid
+                return;
+            }else if(docs.length==1){
+                if(docs[0].verification!=1){
+                    res.json({message: 212});//not verified
                     return; 
                 }
-                res.json({message: 210});//not verified
-                return;
             }
+
         });
     });
     
@@ -352,18 +359,29 @@ router.route('/collections')
     })
     .put(function(req, res) {
         console.log(req.body);//edit a collections aspects
-        Collection.findById(req.body.doc._id, function(err, collection) {
+        Collection.find({'name': sanitizeHtml(req.body.doc.name)}, function(err, doc) {
             if (err)
                 res.send(err);
-            collection.descrip = sanitizeHtml(req.body.doc.descrip);
-            collection.name = sanitizeHtml(req.body.doc.name);
-            collection.open = sanitizeHtml(req.body.doc.open);
-            collection.save(function(err) {
-            if (err)
-                res.send(err);  
-            });
-            res.json({message: 200});
-        });//*/
+            console.log('update collection doc: ' + doc.length);
+            if (doc.length>0){
+                if (doc.length!=1 || doc[0]._id!=req.body.doc._id){
+                    res.json({message: 223});
+                    return;
+                }    
+            }
+            Collection.findById(req.body.doc._id, function(err, collection) {
+                if (err)
+                    res.send(err);
+                collection.descrip = sanitizeHtml(req.body.doc.descrip);
+                collection.name = sanitizeHtml(req.body.doc.name);
+                collection.open = sanitizeHtml(req.body.doc.open);
+                collection.save(function(err) {
+                if (err)
+                    res.send(err);  
+                });
+                res.json({message: 200});
+            });//*/
+        });
     })
     .post(function(req, res) {//create a new collection
         console.log('checking Collection Name');
