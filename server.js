@@ -21,6 +21,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const secretKey = 'noah is awesome';
+app.use(express.static(__dirname + '/app/public'));
 /*
 my route
 post(users) - sign up
